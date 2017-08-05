@@ -1,0 +1,11 @@
+## c
+bin/*.out
+obj/*.o
+lib/lib*
+
+## python virtualev
+virtualenv/
+
+## editor de texto
+
+.vscode/
