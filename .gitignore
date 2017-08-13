@@ -1,11 +1,16 @@
 ## c
 bin/*.out
 obj/*.o
-lib/lib*
+#lib/lib*
+bin/server
 
 ## python virtualev
 virtualenv/
 
+
 ## editor de texto
 
 .vscode/
+
+##
+jsmn/
