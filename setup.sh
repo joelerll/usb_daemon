@@ -27,10 +27,10 @@ fi
 
 ## INSTALANDO libudev
 if [ -x "$(command -v libudev1)" ]; then
-  echo 'Ya tiene instalado libudev1' >&2
+  echo 'Ya tiene instalado libudev' >&2
 else
   echo 'Instalando libudev'
-  apt-get install libudev1 > /dev/null
+  apt-get install libudev-dev > /dev/null
 fi
 
 ## INSTALANDO jsmn
