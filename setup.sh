@@ -2,7 +2,22 @@
 ## https://github.com/zserge/jsmn/blob/master/example/simple.c
 ## https://www.gnu.org/software/libmicrohttpd/
 
-## COMPROBAR SI TIENE INSTALADO GIT
+echo "
+                                                                #####
+                                                               #######
+                  #                                            ##O#O##
+ ######          ###                                           #VVVVV#
+   ##             #                                          ##  VVV  ##
+   ##         ###    ### ####   ###    ###  ##### #####     #          ##
+   ##        #  ##    ###    ##  ##     ##    ##   ##      #            ##
+   ##       #   ##    ##     ##  ##     ##      ###        #            ###
+   ##          ###    ##     ##  ##     ##      ###       QQ#           ##Q
+   ##       # ###     ##     ##  ##     ##     ## ##    QQQQQQ#       #QQQQQQ
+   ##      ## ### #   ##     ##  ###   ###    ##   ##   QQQQQQQ#     #QQQQQQQ
+ ############  ###   ####   ####   #### ### ##### #####   QQQQQ#######QQQQQ
+"
+
+
 if [ -x "$(command -v make)" ]; then
   echo 'Ya tiene instalado make' >&2
 else
@@ -22,7 +37,7 @@ if [ -x "$(command -v libmicrohttpd10)" ]; then
   echo 'Ya tiene instalado libmicrohttpd' >&2
 else
   echo 'Instalando libmicrohttpd'
-  apt-get -y install libmicrohttpd* > /dev/null
+  apt-get -y install libmicrohttpd*
 fi
 
 ## INSTALANDO libudev
@@ -30,8 +45,37 @@ if [ -x "$(command -v libudev1)" ]; then
   echo 'Ya tiene instalado libudev' >&2
 else
   echo 'Instalando libudev'
-  apt-get install libudev-dev > /dev/null
+  apt-get install libudev-dev
 fi
+
+## dependencias en python
+echo "Instalando dependencias de python pip 3"
+if [ -x "$(command -v pip3)" ]; then
+  echo 'Ya tiene instalado pip python3' >&2
+else
+  echo 'Instalando pip python3-pip'
+  apt-get install python3-pip
+fi
+
+if [ -x "$(command -v virtualenv)" ]; then
+  echo 'Ya tiene instalado virtualenv python3' >&2
+else
+  echo 'Instalando virtualenv python3'
+  pip install virtualenv
+  /usr/bin/easy_install virtualenv
+fi
+return 1
+echo "Instalando virtualenv en el proyecto"
+virtualenv -p python3 .virtualenv
+
+echo "Accediendo al virtualenv"
+source .virtualenv/bin/activate
+#
+echo "Instalando dependencias de python3"
+pip install -r requirements.txt
+
+## ejecutar servidor en background
+## ejecutar ingresar al virtualenv python
 
 ## INSTALANDO jsmn
 # function installjsmn {

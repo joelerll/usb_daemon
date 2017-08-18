@@ -1,16 +1,18 @@
-typedef enum {leer_archivo, escribir_archivo, nombrar_dispositivo} SOLICITUD; //solicitud solicitud = IMMEDIATE;
+char *prueba(char * nombrar_dispositivo_json);
 
-typedef struct Dispositivo {
- char *nombre;
- char *vendor_device;
- char *montaje;
- char *nodo;
-}dispositivo;
-
-typedef struct ListarDispositivos {
-  SOLICITUD solicitud = leer_archivo;
-
-}listarDispositivos;
+// typedef enum {leer_archivo, escribir_archivo, nombrar_dispositivo} SOLICITUD; //solicitud solicitud = IMMEDIATE;
+//
+// typedef struct Dispositivo {
+//  char *nombre;
+//  char *vendor_device;
+//  char *montaje;
+//  char *nodo;
+// }dispositivo;
+//
+// typedef struct ListarDispositivos {
+//   SOLICITUD solicitud = leer_archivo;
+//
+// }listarDispositivos;
 
 
 // usb (daemon)
@@ -71,9 +73,6 @@ typedef struct ListarDispositivos {
 *  JSON Listar todos los dispotivos usb
    NO lo necesito, solo es peticion get, lo paso directamente a socket_helper
    por el endpoint puedo saber que hacer
-//
-
-/*
 *  JSON Nombrar dispositivo usb
 *
 *  @name NombrarDispositivoJSON dar un nombre a un usb

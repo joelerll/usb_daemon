@@ -42,42 +42,6 @@ POST
 }
 """
 
-import requests
-headers = {'Content-type': 'application/json', 'Accept': 'text/plain','Content-Length': '56'}
-r = requests.post("http://localhost:8888", data={"datos": "{'nodo': '/dev/sdb1', 'nombre': 'nombre?','nombrar_dispositivo': 'mi_nuevo_nombre'}"})
-# r = requests.get("http://localhost:8888/listar_dispositivos")
-print(r.headers)
-print(r.request.headers)
-print(r.status_code, r.reason)
-print(r.text)
-# from urllib.parse import urlencode
-# from urllib.request import Request, urlopen
-#
-# url = 'http://localhost:8888' # Set destination URL here
-# post_fields = {'nombrar_dispositivo': 'mi_nuevo_nombre', 'nodo': '/dev/sdb1', 'nombre': 'nombre?'}     # Set POST fields here
-#
-# request = Request(url, urlencode(post_fields).encode())
-# json = urlopen(request).read().decode()
-# print(json)
-#
-# import http.client
-# import json
-# connection = http.client.HTTPConnection('http://localhost:8888')
-# headers ={'nombrar_dispositivo': 'mi_nuevo_nombre', 'nodo': '/dev/sdb1', 'nombre': 'nombre?'}
-# foo = {'text': 'hello'}
-# json_foo = json.dumps(foo)
-# connection.request('POST', '/', json_foo, headers)
-#
-# response = connection.getresponse()
-# print(response.read())
-# h2.request('POST', '/', body=None , headers={}, encode_chunked=False)
-
-# import pip
-# installed_packages = pip.get_installed_distributions()
-# installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
-#      for i in installed_packages])
-# print(installed_packages_list)
-# sorted(["%s==%s" % (i.key, i.version) for i in pip.get_installed_distributions()])
 """
 GET
 /leer_archivo
@@ -122,3 +86,35 @@ POST
     str_error: ''
 }
 """
+
+menu = """
+    (1) listar_dispositivo
+    (2) nombrar_dispositivo
+    (3) leer_archivo
+    (4) escribir_archivo
+"""
+import requests
+print(menu)
+opcion = input("Ingrese el numero de la opcion ")
+##http://urwid.org/
+if (opcion == '1'):
+    r = requests.get("http://localhost:8888/listar_dispositivos", data=None)
+    print(r.text)
+
+if (opcion == '2'):
+    r = requests.post("http://localhost:8888/nombrar_dispositivo", data={"nombrar_dispositivo": "{'nodo': '/dev/sdb1', 'nombre': 'nuevo_nombre','solicitud': 'nombrar_dispositivo'}"})
+    print(r.text)
+
+if (opcion == '3'):
+    r = requests.post("http://localhost:8888/leer_archivo", data={"leer_archivo": "{'nombre_archivo': 'archivo', 'nombre': 'nombre?','solicitud': 'leer_archivo'}"})
+    print(r.text)
+
+if (opcion == '4'):
+    r = requests.post("http://localhost:8888/escribir_archivo", data={"escribir_archivo": "{'nombre': 'nodo_nombre', 'nombre_archivo': 'archvivo','solicitud': 'escribir_archivo', 'tamano_contenido': 5, 'contenido': 'contenido id'}"})
+    print(r.text)
+
+
+# print(r.headers)
+# print(r.request.headers)
+# print(r.status_code, r.reason)
+# print(r.text)

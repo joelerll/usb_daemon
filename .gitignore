@@ -15,3 +15,13 @@ virtualenv/
 ##
 jsmn/
 ejemplos/
+.virtualenv/bin
+.virtualenv/include
+.virtualenv/__pycache__
+.virtualenv/lib
+.virtualenv/*.json
+web_server/vue*
+web_server/bootstrap*
+web_server/jquery*
+web_server/mat*
+web_server/fonts/

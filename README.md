@@ -1,20 +1,31 @@
 # Descripcion del proyecto
+Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dispositivo, editar un archivo del dispositivo y leer un archivo del dispositivo
 
 # Instrucciones de instalacion
 
 ### Pasos
 ```sh
 > sudo make install
-> sudo make mount
 > make
+> source .virtualenv/bin/activate
 ```
 
+Correr el servidor, daemon usb, luego el cliente en python
+(como hacer que el servidor y el daemon usb corrar en background al hacer make?)
 
-#### Instalar todas las dependencias
+### Correr el cliente web
 
+1. Tiene que estar activado el virtualenv
 ```sh
-> sudo make install
+> source .virtualenv/bin/activate
 ```
+
+2. Ejecutar
+```sh
+> make client
+```
+
+3. Se abrira el navegador por defecto en el puerto 5000
 
 #### Montar el virtual_usb y virtual_usb_2
 

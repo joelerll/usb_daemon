@@ -5,11 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "utils.h"
 
 #define PORT            8888
-#define POSTBUFFERSIZE  1024
-#define MAXNAMESIZE     100
-#define MAXANSWERSIZE   1024
+#define POSTBUFFERSIZE  800
+#define MAXNAMESIZE     200
+#define MAXANSWERSIZE   8000
 
 #define GET             0
 #define POST            1
@@ -18,7 +19,6 @@ struct connection_info_struct
 {
   int connectiontype;
   char *answerstring;
-  // char *url;
   struct MHD_PostProcessor *postprocessor;
 };
 
@@ -29,20 +29,13 @@ struct solicitud_uno {
   char * nombre;
 };
 
+const char *greetingpage =
+  "%s";
 
 char *page = "";
-const char *askpage = "<html><body>\
-                       What's your name, Sir?<br>\
-                       <form action=\"/namepost\" method=\"post\">\
-                       <input name=\"name\" type=\"text\"\
-                       <input type=\"submit\" value=\" Send \"></form>\
-                       </body></html>";
-
-const char *greetingpage =
-  "<html><body><h1>Welcome, %s!</center></h1></body></html>";
 
 const char *errorpage =
-  "<html><body>This doesn't seem to be right.</body></html>";
+  "{\"error\": \"metodo no valido\"}";
 
 static int
 send_page (struct MHD_Connection *connection, const char *page)
@@ -67,12 +60,47 @@ send_page (struct MHD_Connection *connection, const char *page)
 static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char *key, const char *filename, const char *content_type,const char *transfer_encoding, const char *data, uint64_t off,size_t size)
 {
   struct connection_info_struct *con_info = coninfo_cls;
-  printf("%s\n", data);
-  printf("%s\n", key);
-  // printfs("%s\n", con_info->url);
-  if (0 == strcmp (key, "datos"))
+  if (0 == strcmp (key, "nombrar_dispositivo"))
   {
-    // printf("%ld\n", size);
+    printf("nombrar dispotivos\n");
+    if ((size > 0)) // && (size <= MAXNAMESIZE)
+    {
+      char *res;
+      char *answerstring;
+      answerstring = malloc (MAXANSWERSIZE);
+      if (!answerstring)
+        return MHD_NO;
+      res = prueba(answerstring);
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, res);
+      con_info->answerstring = answerstring;
+    }
+    else
+      con_info->answerstring = NULL;
+
+    return MHD_NO;
+  }
+
+  if (0 == strcmp (key, "escribir_archivo"))
+  {
+    printf("escribir archivo\n");
+
+    if ((size > 0)) // && (size <= MAXNAMESIZE)
+    {
+      char *answerstring;
+      answerstring = malloc (MAXANSWERSIZE);
+      if (!answerstring)
+        return MHD_NO;
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
+      con_info->answerstring = answerstring;
+    }
+    else
+      con_info->answerstring = NULL;
+
+    return MHD_NO;
+  }
+  if (0 == strcmp (key, "leer_archivo"))
+  {
+    printf("leer archivo\n");
     if ((size > 0)) // && (size <= MAXNAMESIZE)
     {
       char *answerstring;
@@ -115,11 +143,6 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
   {
     struct connection_info_struct *con_info;
     con_info = malloc (sizeof (struct connection_info_struct));
-    // con_info->url = "sfd";
-    // memset(con_info->url, '\0', sizeof(con_info->url));
-    // strncpy(con_info->url, url, strlen(url) + 1);
-    // strcpy(con_info->url, url);
-    // memcpy(con_info->url, url, sizeof(url));
     if (NULL == con_info)
       return MHD_NO;
     con_info->answerstring = NULL;
@@ -141,23 +164,12 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
     return MHD_YES;
   }
 
-  // if (0 == strcmp (method, "GET"))
-  // {
-  //   return send_page (connection, askpage);
-  // }
-
   if (strcmp(method,"GET") == 0 && strcmp("/listar_dispositivos",url) == 0) {
     page = "{dispositivo: 'listar_dispositivos'}";
     return send_page (connection, page);
-
   }
 
-  if (strcmp(method,"GET") == 0 && strcmp("/leer_archivo",url) == 0) {
-    page = "leer_archivo";
-    return send_page (connection, page);
-  }
-
-  if (0 == strcmp (method, "POST"))
+  if (0 == strcmp (method, "POST") && (strcmp("/escribir_archivo",url) == 0 || strcmp("/nombrar_dispositivo",url) == 0 || strcmp("/leer_archivo",url) == 0))
   {
     struct connection_info_struct *con_info = *con_cls;
     if (*upload_data_size != 0)
