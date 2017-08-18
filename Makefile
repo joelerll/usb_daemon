@@ -9,15 +9,13 @@ main.o: src/main.c
 json: src/test/json.test.c
 	gcc -Iinclude -Wall src/test/json.test.c -o bin/json.out -Llib -l:libjsmn.a
 
-server: src/server.c
+server_build: src/server.c
 	gcc -Wall -Iinclude src/server.c src/json.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
 
 server_test: src/test/server.test.c
 	gcc -Wall src/test/server.test.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
 
-todo: client  serv
-
-serv:
+server: server_build
 	./bin/server.out
 	## nohup, & disown
 

@@ -2,22 +2,6 @@
 ## https://github.com/zserge/jsmn/blob/master/example/simple.c
 ## https://www.gnu.org/software/libmicrohttpd/
 
-echo "
-                                                                #####
-                                                               #######
-                  #                                            ##O#O##
- ######          ###                                           #VVVVV#
-   ##             #                                          ##  VVV  ##
-   ##         ###    ### ####   ###    ###  ##### #####     #          ##
-   ##        #  ##    ###    ##  ##     ##    ##   ##      #            ##
-   ##       #   ##    ##     ##  ##     ##      ###        #            ###
-   ##          ###    ##     ##  ##     ##      ###       QQ#           ##Q
-   ##       # ###     ##     ##  ##     ##     ## ##    QQQQQQ#       #QQQQQQ
-   ##      ## ### #   ##     ##  ###   ###    ##   ##   QQQQQQQ#     #QQQQQQQ
- ############  ###   ####   ####   #### ### ##### #####   QQQQQ#######QQQQQ
-"
-
-
 if [ -x "$(command -v make)" ]; then
   echo 'Ya tiene instalado make' >&2
 else
@@ -57,23 +41,31 @@ else
   apt-get install python3-pip
 fi
 
-if [ -x "$(command -v virtualenv)" ]; then
-  echo 'Ya tiene instalado virtualenv python3' >&2
-else
-  echo 'Instalando virtualenv python3'
-  pip install virtualenv
-  /usr/bin/easy_install virtualenv
-fi
-return 1
-echo "Instalando virtualenv en el proyecto"
-virtualenv -p python3 .virtualenv
+## sin virtualenv
 
-echo "Accediendo al virtualenv"
-source .virtualenv/bin/activate
+# if [ -x "$(command -v virtualenv)" ]; then
+#   echo 'Ya tiene instalado virtualenv python3' >&2
+# else
+#   echo 'Instalando virtualenv python3'
+#   pip install virtualenv
+#   /usr/bin/easy_install virtualenv
+# fi
+# return 1
+# echo "Instalando virtualenv en el proyecto"
+# virtualenv -p python3 .virtualenv
+#
+# echo "Accediendo al virtualenv"
+# source .virtualenv/bin/activate
 #
 echo "Instalando dependencias de python3"
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
+echo "Terminado de instalar"
+echo "
+_   ,--()
+ ( )-'-.------|>
+  \"     \`--[]
+"
 ## ejecutar servidor en background
 ## ejecutar ingresar al virtualenv python
 

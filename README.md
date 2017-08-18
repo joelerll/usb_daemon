@@ -7,25 +7,28 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 ```sh
 > sudo make install
 > make
-> source .virtualenv/bin/activate
 ```
 
 Correr el servidor, daemon usb, luego el cliente en python
 (como hacer que el servidor y el daemon usb corrar en background al hacer make?)
 
-### Correr el cliente web
+### Ejecutar el servidor
 
-1. Tiene que estar activado el virtualenv
+1.
+
 ```sh
-> source .virtualenv/bin/activate
+> make server
 ```
 
-2. Ejecutar
+
+### Correr el cliente web
+
+1. Ejecutar
 ```sh
 > make client
 ```
 
-3. Se abrira el navegador por defecto en el puerto 5000
+2. Se abrira el navegador por defecto en el puerto 5000
 
 #### Montar el virtual_usb y virtual_usb_2
 
