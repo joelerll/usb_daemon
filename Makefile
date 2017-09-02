@@ -27,6 +27,17 @@ client:
 	# source .virtualenv/bin/activate
 	python3 server.py
 
+# INICIO - PRUEBA DE DAEMON
+testDaemon: daemon.o usb.o 
+	gcc obj/usb.o obj/daemon.o -o bin/daemonTest -ludev
+
+usb.o: src/usb/usb.c
+	gcc -c -Wall  -Iinclude/ src/usb/usb.c -o obj/usb.o -ludev
+
+daemon.o: src/usb/daemon.c include/usbFunctions.h
+	gcc -c -Wall -Iinclude/ src/usb/daemon.c -o obj/daemon.o -ludev
+# FIN - PRUEBA DE DAEMON
+
 clean:
 	rm -rf obj/*.o bin/server lib/*.so obj/*.o web_server/bootstrap.min.* web_server/jquery.min.* web_server/vue.* web_server/bootstrap.min.* web_server/materialize.min* web_server/fonts
 
