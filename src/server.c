@@ -22,6 +22,7 @@ struct connection_info_struct
   struct MHD_PostProcessor *postprocessor;
 };
 
+char *url_tmp;
 
 struct solicitud_uno {
   char * solicitud;
@@ -59,6 +60,8 @@ send_page (struct MHD_Connection *connection, const char *page)
 
 static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char *key, const char *filename, const char *content_type,const char *transfer_encoding, const char *data, uint64_t off,size_t size)
 {
+  printf("%s\n", url_tmp);
+  printf("%s\n", data);
   struct connection_info_struct *con_info = coninfo_cls;
   if (0 == strcmp (key, "nombrar_dispositivo"))
   {
@@ -139,6 +142,7 @@ static void request_completed (void *cls, struct MHD_Connection *connection, voi
 
 static int answer_to_connection (void *cls, struct MHD_Connection *connection, const char *url, const char *method,const char *version, const char *upload_data,size_t *upload_data_size, void **con_cls)
 {
+  url_tmp = malloc(sizeof(char *));
   if (NULL == *con_cls)
   {
     struct connection_info_struct *con_info;
@@ -163,9 +167,8 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
     *con_cls = (void *) con_info;
     return MHD_YES;
   }
-
   if (strcmp(method,"GET") == 0 && strcmp("/listar_dispositivos",url) == 0) {
-    page = "{dispositivo: 'listar_dispositivos'}";
+    page = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [{\"nombre\": \"mi_dispotivito\", \"montaje\": \"/home/joel\",\"nodo\": \"/dev/ddd\",\"id\": \"vendor:device\"},{\"nombre\": \"mi_dispotivito2\", \"montaje\": \"/home/joel/dos\",\"nodo\": \"/dev/bbb\",\"id\": \"vendor:device:2\"}],\"status\": 1,\"str_error\": \"mensaje de arror\"}";
     return send_page (connection, page);
   }
 

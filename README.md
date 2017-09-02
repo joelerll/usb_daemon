@@ -1,6 +1,9 @@
 # Descripcion del proyecto
 Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dispositivo, editar un archivo del dispositivo y leer un archivo del dispositivo
 
+
+# Uso cliente
+
 # Instrucciones de instalacion
 
 ### Pasos
