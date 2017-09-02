@@ -2,13 +2,6 @@
 # https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js
 # https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js
 
-if [ -x "$(command -v wget)" ]; then
-  echo 'Ya tiene instalado wget' >&2
-else
-  echo 'Instalando wget'
-  apt-get install wget
-fi
-
 echo "Descargando dependencias web page"
 echo "Descargando vuejs"
 wget https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js -q -P web_server/ > /dev/null

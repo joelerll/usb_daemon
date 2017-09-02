@@ -35,13 +35,10 @@ def escribir_archivo():
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-"""
-Vistas en Clientes, instalar las dependencias con npm install
-"""
 @app.route('/', methods=['GET'])
 def index():
 	return send_from_directory('web_server', 'index.html')
 
-if __name__ == '__main__': #sad sad
+if __name__ == '__main__':
     # threading.Timer(1.25, lambda: webbrowser.open(url)).start()
     app.run(port=5000, debug=True) #debug=False

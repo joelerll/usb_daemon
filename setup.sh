@@ -3,14 +3,28 @@
 ## https://www.gnu.org/software/libmicrohttpd/
 
 if [ -x "$(command -v make)" ]; then
-  echo 'Ya tiene instalado make' >&2
+  echo 'Ya tiene instalado make'
 else
   echo 'Instalando make'
   apt-get install make
 fi
 
+if [ -x "$(command -v gcc)" ]; then
+  echo 'Ya tiene instalado gcc'
+else
+  echo 'Instalando gcc'
+  apt-get install gcc
+fi
+
+if [ -x "$(command -v wget)" ]; then
+  echo 'Ya tiene instalado wget'
+else
+  echo 'Instalando wget'
+  apt-get install wget
+fi
+
 if [ -x "$(command -v git)" ]; then
-  echo 'Ya tiene instalado git' >&2
+  echo 'Ya tiene instalado git'
 else
   echo 'Instalando git'
   apt-get install git -y
@@ -18,7 +32,7 @@ fi
 
 ## INSTALANDO libmicrohttpd
 if [ -x "$(command -v libmicrohttpd10)" ]; then
-  echo 'Ya tiene instalado libmicrohttpd' >&2
+  echo 'Ya tiene instalado libmicrohttpd'
 else
   echo 'Instalando libmicrohttpd'
   apt-get -y install libmicrohttpd*
@@ -26,7 +40,7 @@ fi
 
 ## INSTALANDO libudev
 if [ -x "$(command -v libudev1)" ]; then
-  echo 'Ya tiene instalado libudev' >&2
+  echo 'Ya tiene instalado libudev'
 else
   echo 'Instalando libudev'
   apt-get install libudev-dev
@@ -35,7 +49,7 @@ fi
 ## dependencias en python
 echo "Instalando dependencias de python pip 3"
 if [ -x "$(command -v pip3)" ]; then
-  echo 'Ya tiene instalado pip python3' >&2
+  echo 'Ya tiene instalado pip python3'
 else
   echo 'Instalando pip python3-pip'
   apt-get install python3-pip
