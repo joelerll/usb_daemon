@@ -3,8 +3,9 @@
 #include <mntent.h>
 #include <stdlib.h>
 #include "usbFunctions.h"
+#include <string.h>
 
-//gcc -Wall -Iinclude/ src/usb.c -o bin/usb -ludev
+//gcc -Wall -Iinclude/ src/usb/usb.c -o bin/usb -ludev
 
 InfoUSB *crearPlantillaInformacion(char *usbDirMount, char *usbNodo, char *idVendor, char *idProduct){
     InfoUSB *info = (InfoUSB *)malloc(sizeof(InfoUSB));
@@ -36,8 +37,11 @@ struct udev_device* obtener_hijo(struct udev* udev , struct udev_device* padre, 
 	return hijo;
 }
 
+listaDispConectados *getListaDispConectados(struct udev* udev){
 
-static void enumerar_disp_alm_masivo(struct udev* udev){
+    struct listaDispConectados *listaDisp = (listaDispConectados *)malloc(sizeof(listaDispConectados));
+    listaDisp->lista =(InfoUSB**)malloc(sizeof(InfoUSB *));
+
 	struct udev_enumerate* enumerar = udev_enumerate_new(udev);
 
 	//Buscamos los dispositivos USB del tipo SCSI (MASS STORAGE)
@@ -49,6 +53,8 @@ static void enumerar_disp_alm_masivo(struct udev* udev){
 	struct udev_list_entry *dispositivos = udev_enumerate_get_list_entry(enumerar);
 	struct udev_list_entry *entrada;
 
+    int iterator = 0;
+
 	//Recorremos la lista obtenida
 	udev_list_entry_foreach(entrada, dispositivos){
 		const char* ruta = udev_list_entry_get_name(entrada);
@@ -57,37 +63,32 @@ static void enumerar_disp_alm_masivo(struct udev* udev){
 		//Obtenemos la informacion pertinente del dispositivo
 		struct udev_device* block = obtener_hijo(udev, scsi, "block");
 		struct udev_device* scsi_disk = obtener_hijo(udev, scsi, "scsi_disk");
-
 		struct udev_device* usb = udev_device_get_parent_with_subsystem_devtype(scsi, "usb", "usb_device");
 
-		if (block && scsi_disk && usb){
-            
-            char *usbNodo = (char *) udev_device_get_devnode(block);
-            char *usbDirMount = getUSBDirMount(usbNodo);
-            char *idVendor = (char *)udev_device_get_sysattr_value(usb, "idVendor");
-            char *idProduct = (char *)udev_device_get_sysattr_value(usb, "idProduct");
-            
+		if (block && scsi_disk && usb){   
             //Se crea la estructura que contiene la información del usb
-            struct InfoUSB *info = crearPlantillaInformacion(usbDirMount,usbNodo,idVendor,idProduct);
-                            
-            printf("Nodo: %s, Montado en: %s, id's: %s:%s\n",info->usbNodo,
-                                                            info->usbDirMount,
-                                                            info->idVendor,
-                                                            info->idProduct);
-		}
+            char *usbNodo = (char *)malloc(sizeof(char));
+            char *usbDirMount = (char *)malloc(sizeof(char));
+            char *idVendor = (char *)malloc(sizeof(char));
+            char *idProduct = (char *)malloc(sizeof(char));
 
-		if (block){
-			udev_device_unref(block);
-		}
+            strcpy(usbNodo,(char *) udev_device_get_devnode(block));
+            strcpy(usbDirMount,getUSBDirMount(usbNodo));
+            strcpy(idVendor,(char *)udev_device_get_sysattr_value(usb, "idVendor"));
+            strcpy(idProduct,(char *)udev_device_get_sysattr_value(usb, "idProduct"));
 
-		if (scsi_disk){
-			udev_device_unref(scsi_disk);
+            struct InfoUSB *info = crearPlantillaInformacion(usbDirMount,usbNodo,idVendor,idProduct);                
+            //Se guarda la plantilla de cada usb en la lista
+            *((listaDisp->lista)+iterator) = info;
+            iterator++;
 		}
-
+		if (block) udev_device_unref(block);
+		if (scsi_disk) udev_device_unref(scsi_disk);
 		udev_device_unref(scsi);
 	}
-
+    listaDisp->n_Dispositivos = iterator;
 	udev_enumerate_unref(enumerar);
+    return listaDisp;
 }
 
 char *getUSBDirMount(char *usbNodo){
@@ -121,11 +122,33 @@ char *getUSBDirMount(char *usbNodo){
     return NULL;
 }
 
+//Función que imprime los dispositivos conectados con su respectiva información.
+char *imprimirListaDispositivos(listaDispConectados *listaDisp){
 
-int main(){
+    printf("----------------------------------------------------------------------\n\n");
+    printf("\tLISTA DE DISPOSITIVOS CONECTADOS\n\n");
 
+    char *retorno  = malloc(sizeof(char));
+
+    for(int i=0 ; i<listaDisp->n_Dispositivos; i++){
+        struct InfoUSB *prueba = *((listaDisp->lista)+i);
+        printf("\t\t%i) Nodo     : %s\n",i+1,prueba->usbNodo);
+        strcat(retorno,"Nodo     : ");
+        printf("\t\t   Montaje  : %s\n",prueba->usbDirMount);
+        printf("\t\t   idVendor : %s\n",prueba->idVendor);
+        printf("\t\t   idProduct: %s",prueba->idProduct);
+        printf("\n\n");
+    }
+
+    printf("----------------------------------------------------------------------\n\n");
+    
+    return retorno;
+
+}
+
+/*int main(){
     struct udev* udev = udev_new();
-    enumerar_disp_alm_masivo(udev);
+    imprimirListaDispositivos(getListaDispConectados(udev));
     udev_unref(udev);
     return 0;
-}
+}*/

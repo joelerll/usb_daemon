@@ -7,10 +7,14 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
+#include "usbFunctions.h"
 
-int main(void) { 
+// ps -efj - comando para verificar procesos, de acá se obtiene el pid
+// sudo kill PID - matar proceso 
+
+int main() { 
   pid_t pid, sid;
-  int apachePIDfile, apachePIDread, apachePID, daemonLogFileDesc;
+  int apachePIDfile,apachePIDread, apachePID, daemonLogFileDesc;
   char buf[5], filename[255];        
           
   /* Forkeamos el proceso padre */
@@ -95,7 +99,9 @@ int main(void) {
       perror ("No puedo abrir el fichero en proc");
       exit(EXIT_FAILURE);
     } else {
-      write (daemonLogFileDesc, "Apache running\n", 15);
+      struct udev* udev = udev_new();
+      char *lista = imprimirListaDispositivos(getListaDispConectados(udev));
+      write (daemonLogFileDesc, lista, 15);
       sleep(10); /* espera 30 segundos */
     }
   }
