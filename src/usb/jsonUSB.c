@@ -5,7 +5,12 @@
 
 void parseToJson(listaDispConectados *listaDisp){
     
+<<<<<<< HEAD
     char json[50000] = "Dispositivos:[";
+=======
+    FILE *fp= NULL;
+    char json[50000] = "[";
+>>>>>>> 1803d5b8b121d2a2554064725511694849f71380
     
     for(int i=0; i<listaDisp->n_Dispositivos; i++){
     

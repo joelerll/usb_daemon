@@ -74,7 +74,7 @@ def listar_dispositivos():
 			tmp = []
 			tmp.append( respuesta['nombre'])
 			tmp.append( respuesta['montaje'])
-			tmp.append( respuesta['id'])
+			tmp.append( respuesta['idVendor'])
 			tmp.append( respuesta['nodo'])
 			resp.append(tmp)
 		print (tabulate(resp, headers=["nombre","montaje", "id", "nodo"], tablefmt="grid"))

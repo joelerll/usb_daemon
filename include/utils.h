@@ -1,4 +1,4 @@
-char *prueba(char * nombrar_dispositivo_json);
+char *prueba();
 
 // typedef enum {leer_archivo, escribir_archivo, nombrar_dispositivo} SOLICITUD; //solicitud solicitud = IMMEDIATE;
 //

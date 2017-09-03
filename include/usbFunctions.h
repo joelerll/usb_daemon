@@ -15,11 +15,19 @@ typedef struct listaDispConectados{
 
 char GLOBALJSON[50000];
 
+<<<<<<< HEAD
 //static pthread_mutex_t candado;
 //static pthread_cond_t producido;
 //static pthread_cond_t consumido;
 
 //pthread_mutex_init(&candado, NULL);
+=======
+// static pthread_mutex_t candado;
+//static pthread_cond_t producido;
+//static pthread_cond_t consumido;
+
+// pthread_mutex_init(&candado, NULL);
+>>>>>>> 1803d5b8b121d2a2554064725511694849f71380
 //pthread_cond_init(&producido, NULL);
 //pthread_cond_init(&consumido, NULL);
 

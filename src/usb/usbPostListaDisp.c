@@ -8,7 +8,13 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include "usbFunctions.h"
+<<<<<<< HEAD
 #include <json/json.h>
+=======
+
+#define SERV_TCP_PORT 8236 /* server's port number */
+#define MAX_SIZE 5000
+>>>>>>> 1803d5b8b121d2a2554064725511694849f71380
 
 void error(char *msg)
 {
@@ -16,60 +22,51 @@ void error(char *msg)
     exit(-1);
 }
 
+<<<<<<< HEAD
 void getSolicitud(int client_socket, char *JSONSolicitud);
 
 void *server(){
+=======
+void server(){
+  printf("servidor \n");
+  int sockfd, newsockfd, clilen;
+  struct sockaddr_in cli_addr, serv_addr;
+  int port;
+  char string[MAX_SIZE];
+  int len;
+>>>>>>> 1803d5b8b121d2a2554064725511694849f71380
 
-  // definicion de las variables
-  int sockfd, client_socket;
-  struct sockaddr_in serv_addr;
-  
-  char *ip = "127.0.0.1";
-  char *puerto = "5001";
-  
-  // inicializacion del socket
-  sockfd = socket(AF_INET, SOCK_STREAM, 0);
-  
-  if (sockfd < 0) {
-    error("ERROR al iniciar el socket");
+  port = SERV_TCP_PORT;
+
+  if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+     perror("can't open stream socket");
+     exit(1);
   }
 
-  // set el puerto y los datos necesarios para inicializar el server
-  memset(&serv_addr, 0, sizeof(serv_addr));
+  bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = inet_addr(ip);
-  serv_addr.sin_port = htons(atoi(puerto));
-
-  //Enlace 
-  if (bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
-    error("ERROR en bind socket");
-  }
-
-  listen(sockfd,100000);
+  serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  serv_addr.sin_port = htons(port);
   
-  //getSolicitud(GLOBALJSON);
-  //getSolicitud(GLOBALJSON);
-  //getSolicitud(GLOBALJSON);
-
-  //lee la solicitud que envia el socket
-  char solicitud[50000] = "";
-
-  while(1){
-    client_socket = accept(sockfd, NULL, NULL);
-    if (client_socket < 0) {
-      close(client_socket);
-      printf("Error al conectarse \n");
-    }
-
-    int n = read(client_socket, solicitud, sizeof(solicitud));
-    if (n < 0) 
-      error("ERROR al leer el socket");
-
-    //Aqui tengo que Analizar solicitud para ver que devuelvo
-    getSolicitud(client_socket,GLOBALJSON);
-    //
+  if(bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+     perror("can't bind local address");
+     exit(1);
   }
-  
+  listen(sockfd, 5);
+
+  for(;;) {
+     clilen = sizeof(cli_addr);
+     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+    
+     if(newsockfd < 0) {
+        perror("can't bind local address");
+     }
+
+     getSolicitud(newsockfd,GLOBALJSON);
+     
+     string[len] = 0;
+     close(newsockfd);
+  }  
 }
 
 void getSolicitud(int client_socket, char JSONSolicitud[]){

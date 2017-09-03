@@ -37,3 +37,5 @@ Log.txt
 file.txt
 test.txt
 listDis*
+bin/daemonTest
+bin/usbPOrtListaDisp
