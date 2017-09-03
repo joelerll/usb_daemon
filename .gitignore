@@ -27,3 +27,6 @@ web_server/mat*
 web_server/fonts/
 p/
 pid_file
+test.txt
+daemonTest
+usb

@@ -1,7 +1,0 @@
-[ ] Cliente web mockup, interfaz y como se hara la interaccion con cliente
-[ ] Probar en un docker container el script de instalacion
-[ ] mount virtual usb, probar con el codigo valido
-[ ] script de installacion en bash amigable
-[ ] correr simultaneamente el server client y el server server
-[ ] correr todo en un solo comando make install, make server, make usb, make client, make mount, sera el comando make
-[ ] gifs de uso de aplicacion e instalacion, correr server, correr cliente web, client terminal

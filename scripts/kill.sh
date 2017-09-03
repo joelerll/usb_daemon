@@ -19,10 +19,13 @@
 # 	fi
 # fi
 
+PUERTO_SOCKET_DAEMON=8080
 if [ $(pgrep  -f daemonTest) ]; then
 	PID_NAME=$(pgrep  -f server.out)
 	kill $PID_NAME
 	echo "Proceso daemon terminado"
+	fuser -k $PUERTO_SOCKET_DAEMON/tcp
+	echo "Matado el pueto del tcp del daemon"
 else
 	echo "> El proceso no existe"
 	echo "> Parece que el archivo tenia un pid que no existe, por favor vuelva a correr el daemon"
