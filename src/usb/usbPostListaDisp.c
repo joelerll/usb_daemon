@@ -8,13 +8,10 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include "usbFunctions.h"
-<<<<<<< HEAD
 #include <json/json.h>
-=======
 
 #define SERV_TCP_PORT 8236 /* server's port number */
 #define MAX_SIZE 5000
->>>>>>> 1803d5b8b121d2a2554064725511694849f71380
 
 void error(char *msg)
 {
@@ -22,11 +19,10 @@ void error(char *msg)
     exit(-1);
 }
 
-<<<<<<< HEAD
 void getSolicitud(int client_socket, char *JSONSolicitud);
 
 void *server(){
-=======
+  
 void server(){
   printf("servidor \n");
   int sockfd, newsockfd, clilen;
@@ -34,7 +30,6 @@ void server(){
   int port;
   char string[MAX_SIZE];
   int len;
->>>>>>> 1803d5b8b121d2a2554064725511694849f71380
 
   port = SERV_TCP_PORT;
 
