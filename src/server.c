@@ -38,6 +38,15 @@ char *page = "";
 const char *errorpage =
   "{\"error\": \"metodo no valido\"}";
 
+char * my_strcpy( char *dest,  const char *src )
+{
+    char *p = dest;
+
+    while ( *p++ = *src++ );
+
+    return dest;
+}
+
 static int
 send_page (struct MHD_Connection *connection, const char *page)
 {
@@ -61,7 +70,6 @@ send_page (struct MHD_Connection *connection, const char *page)
 static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char *key, const char *filename, const char *content_type,const char *transfer_encoding, const char *data, uint64_t off,size_t size)
 {
   printf("%s\n", url_tmp);
-  printf("%s\n", data);
   struct connection_info_struct *con_info = coninfo_cls;
   if (0 == strcmp (key, "nombrar_dispositivo"))
   {
@@ -143,6 +151,10 @@ static void request_completed (void *cls, struct MHD_Connection *connection, voi
 static int answer_to_connection (void *cls, struct MHD_Connection *connection, const char *url, const char *method,const char *version, const char *upload_data,size_t *upload_data_size, void **con_cls)
 {
   url_tmp = malloc(sizeof(char *));
+  // my_strcpy(url_tmp, url);
+  // strcpy(url_tmp, url);
+  strcpy(url_tmp, url);
+  // printf("%s\n", url_tmp);
   if (NULL == *con_cls)
   {
     struct connection_info_struct *con_info;
@@ -188,11 +200,17 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
   return send_page (connection, errorpage);
 }
 
-int main ()
+int main (int argc, char **argv)
 {
+  if (argc !=2) {
+    printf("\n**Error, argumentos invalidos, por favor ingrese el puerto**\n\n");
+    return 0;
+  }
+  int puerto = atoi(argv[1]);
+  printf("Servidor inicializado en el puerto: %d\n", puerto);
   struct MHD_Daemon *daemon;
 
-  daemon = MHD_start_daemon (MHD_USE_SELECT_INTERNALLY, PORT, NULL, NULL, &answer_to_connection, NULL,MHD_OPTION_NOTIFY_COMPLETED, request_completed, NULL, MHD_OPTION_END);
+  daemon = MHD_start_daemon (MHD_USE_SELECT_INTERNALLY, puerto, NULL, NULL, &answer_to_connection, NULL,MHD_OPTION_NOTIFY_COMPLETED, request_completed, NULL, MHD_OPTION_END);
   if (NULL == daemon)
     return 1;
 

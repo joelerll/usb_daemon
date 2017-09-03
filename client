@@ -17,7 +17,7 @@ from tabulate import tabulate
 ayuda = """
 		Ejecute para ayuda:
 		
-		\033[92mpython3 client.py --help\033[0m
+		\033[92m./client --help\033[0m
 	"""
 
 opciones_string = """
@@ -35,20 +35,20 @@ Uso: python3 client.py PUERTO [solicitud] [argumentos...]
 	\033[1mArgumentos listar_dispositivos:\033[0m
 		Listar todos los dispositivos conectado al pc
 
-		\033[94mEjemplo: python3 client.py 8888 listar_dispositivos\033[0m
+		\033[94mEjemplo: ./client 8888 listar_dispositivos\033[0m
 	
 	\033[1mArgumentos nombrar_dispositivo:\033[0m
 		nodo                         nodo del localizacion del usb, Ej: /dev/sdb1
 		nombre                       nombre del usb que se desea dar, Ej: mi_usb
 
-		\033[94mEjemplo: python3 client.py 8888 nombrar_dispositivo /dev/sdb1 mi_usb\033[0m
+		\033[94mEjemplo: ./client 8888 nombrar_dispositivo /dev/sdb1 mi_usb\033[0m
 
 	
 	\033[1mArgumento leer_archivo:\033[0m
 		nombre                       nombre del usb previamente establecido
 		nombre_archivo               nombre del archivo relativa al usb, Ej: mi_archivo.txt  
 		
-		\033[94mEjemplo: python3 client.py 8888 leer_archivo mi_usb mi_archivo.txt\033[0m
+		\033[94mEjemplo: ./client 8888 leer_archivo mi_usb mi_archivo.txt\033[0m
 	
 	
 	\033[1mArgumento escribir_archivo:\033[0m
@@ -57,7 +57,7 @@ Uso: python3 client.py PUERTO [solicitud] [argumentos...]
 		tamano_contenido             tamano del contenido que se desea guardar
 		contenido                    direccion del archivo que contiene lo que se desea enviar, Ej: /home/user/contenido.txt
 		
-		\033[94mEjemplo: python3 client.py 8888 escribir_archivo mi_usb mi_archivo.txt 50 /home/user/contenido.txt\033[0m
+		\033[94mEjemplo: ./client 8888 escribir_archivo mi_usb mi_archivo.txt 50 /home/user/contenido.txt\033[0m
 """
 
 def listar_dispositivos():

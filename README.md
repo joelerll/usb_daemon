@@ -1,28 +1,38 @@
+<!-- errores ortograficos -->
 # Descripcion del proyecto
 Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dispositivo, editar un archivo del dispositivo y leer un archivo del dispositivo
 
+# 5 Simples pasos
 
-# Uso cliente
+```sh
+> sudo make install 				# instala las dependencias
+> make 								# complila los archivos
+> make daemon						# ejecuta el daemon
+> ./bin/server 5555 				# ejecutar el servidor
+> ./client 5555 listar_dispositivos # usar el cliente
+```
 
-# Instrucciones de instalacion
+# Instalacion
+La siguente instruccion instalara las dependencias necesarias para el proyecto
 
-### Pasos
 ```sh
 > sudo make install
-> make
 ```
 
-Correr el servidor, daemon usb, luego el cliente en python
-(como hacer que el servidor y el daemon usb corrar en background al hacer make?)
-
-### Ejecutar el servidor
-
-1.
+# Uso cliente
+<!-- mostrar gif del uso del cliente los resultados -->
 
 ```sh
-> make server
+> ./client --help
+
 ```
 
+# Matar al daemon
+Es muy facil, solo ejecutar
+
+```sh
+> make kill
+```
 
 ### Correr el cliente web
 
@@ -55,11 +65,6 @@ __Para desmontarlo__
 > sudo make umount
 ```
 
+# Dependencias
 
-# Instrucciones de uso servidor y cliente
-
-imagenes gif de uso
-
-# Test archivos
-
-usar el virtual_usb para los test
+Direccion url de las dependencias y para que las usamos
