@@ -1,10 +1,10 @@
 #include <json/json.h>
 #include <stdio.h>
 #include "usbFunctions.h"
+#include <string.h>
 
 void parseToJson(listaDispConectados *listaDisp){
     
-    FILE *fp= NULL;
     char json[50000] = "Dispositivos:[";
     
     for(int i=0; i<listaDisp->n_Dispositivos; i++){
@@ -35,7 +35,7 @@ void parseToJson(listaDispConectados *listaDisp){
     strcat(json,"]");
     //printf("%s",json);
     strcpy(GLOBALJSON,json);
-    
+    printf(".....");
     //printf("--ACT: %s\n",i);
 
 }

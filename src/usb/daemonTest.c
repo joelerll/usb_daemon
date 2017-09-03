@@ -46,7 +46,8 @@ int main(int argc, char* argv[])
     memset(GLOBALJSON,0,sizeof(GLOBALJSON));
 
     pthread_t *hilo2;
-    int status = pthread_create(hilo2, NULL, server, NULL);
+    int status = 0;
+    status = pthread_create(hilo2, NULL, server, NULL);
     if (status < 0) {
         fprintf(stderr, "Error al crear el hilo\n");
         exit(-1);
@@ -57,7 +58,6 @@ int main(int argc, char* argv[])
         //Hacer hilo para la lista
         listaDispConectados *listaDisp = (getListaDispConectados(udev));
         parseToJson(listaDisp);
-    
         udev_unref(udev);
         //Hilo para servidor
         sleep(1);

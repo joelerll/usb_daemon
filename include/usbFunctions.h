@@ -1,3 +1,5 @@
+#include <libudev.h>
+
 typedef struct InfoUSB{
     char *usbDirMount;
     char *usbNodo;
@@ -13,11 +15,11 @@ typedef struct listaDispConectados{
 
 char GLOBALJSON[50000];
 
-static pthread_mutex_t candado;
+//static pthread_mutex_t candado;
 //static pthread_cond_t producido;
 //static pthread_cond_t consumido;
 
-pthread_mutex_init(&candado, NULL);
+//pthread_mutex_init(&candado, NULL);
 //pthread_cond_init(&producido, NULL);
 //pthread_cond_init(&consumido, NULL);
 
@@ -29,4 +31,4 @@ void imprimirListaDispositivos(listaDispConectados *lista);
 
 void parseToJson(listaDispConectados *listaDisp);
 
-void server();
+void *server();
