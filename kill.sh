@@ -20,7 +20,7 @@
 # fi
 
 if [ $(pgrep  -f daemonTest) ]; then
-	PID_NAME=$(pgrep  -f server.out)
+	PID_NAME=$(pgrep  -f daemonTest)
 	kill $PID_NAME
 	echo "Proceso daemon terminado"
 else
