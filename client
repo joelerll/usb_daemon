@@ -19,7 +19,12 @@ ayuda = """
 		
 		\033[92m./client --help\033[0m
 	"""
-
+def is_json(myjson):
+  try:
+    json_object = json.loads(myjson)
+  except ValueError:
+    return False
+  return True
 opciones_string = """
 Uso: python3 client.py PUERTO [solicitud] [argumentos...]
 	
@@ -93,7 +98,7 @@ def nombrar_dispositivo():
 
 def leer_archivo():
 	if len(sys.argv) == 5:
-		req ="{" +  "{'nombre_archivo': '{}', 'nombre': '{}','solicitud': 'leer_archivo'}".format(sys.argv[3],sys.argv[4]) + "}"
+		req ="{" +  '"nombre_archivo": "{}", "nombre": "{}","solicitud": "leer_archivo"'.format(sys.argv[3],sys.argv[4]) + "}"
 		r = requests.post("http://localhost:{}/leer_archivo".format(int(sys.argv[1])), data={"leer_archivo": req})
 		respuesta = json.loads(r.text)
 		print(r.text)
@@ -103,11 +108,19 @@ def leer_archivo():
 
 def escribir_archivo():
 	# TODO: leer archivo para escribirlo
-	if len(sys.argv) == 7:
-		req ="{" +  "{'nombre': '{}', 'nombre_archivo': '{}','solicitud': 'escribir_archivo', 'tamano_contenido': {}, 'contenido': '{}'}".format(sys.argv[5],sys.argv[6]) + "}"
-		r = requests.post("http://localhost:8888/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
-		respuesta = json.loads(r.text)
-		print(r.text)
+	if len(sys.argv) == 6:
+		try:
+			with open(sys.argv[4], 'r') as myfile:
+   				data = myfile.read().encode('utf8')
+   				data = str(data)
+   				data = data[2:-1]
+   				# argv[5]
+   				req ="{" +  '"nombre": "{}", "nombre_archivo": "{}","solicitud": "escribir_archivo", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],len(data), data) + "}"
+   				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
+   				respuesta = json.loads(r.text)
+   				print(respuesta)
+		except:
+			print("El archivo no existe")
 	else:
 		print("El numero de argumentos no es valido")
 		print(ayuda)
@@ -124,7 +137,7 @@ def opciones():
 		elif (str(sys.argv[2]) == 'escribir_archivo'):
 			escribir_archivo()
 		else:
-			escribir_archivo()
+			print("La solicitud no es valida")
 	except:
 		print("El server no esta escuchando en este puerto")
 
@@ -149,3 +162,91 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+"""
+GET
+/listar_dispositivo
+
+*response
+{
+    solicitud: 'listar_dispositivos',
+    dispositivos: [{
+        nombre: '',
+        id: 'vendor:device',
+        montaje: '/home',
+        nodo: '/dev/'
+    }],
+    status: 0,
+    str_error: ''
+}
+"""
+
+"""
+POST
+/nombrar_dispositivo
+
+*request
+{
+    solicitud: 'nombrar_dispositivo',
+    nodo: '/dev',
+    nombre: ''
+}
+
+*response
+{
+    solicitud: 'nombrar_dispositivo',
+    nombre: '',
+    nodo: '/dev/'
+    status: 0,
+    str_error: ''
+    status: 0,
+}
+"""
+
+"""
+GET
+/leer_archivo
+
+*request
+{
+    solicitud: 'leer_archivo',
+    nombre: '',
+    nombre_archivo: ''
+}
+
+*response
+{
+    solicitud: 'leer_archivo',
+    nombre: '',
+    nombre_archivo: '',
+    contenido: ''
+    status: 0,
+    str_error: ''
+}
+"""
+
+"""
+POST
+/escribir_archivo
+
+*request
+{
+    solicitud: 'escribir_archivo',
+    nombre: '',
+    nombre_archivo: '',
+    tamano_contenido: '',
+    contenido: ''
+}
+
+*response
+{
+    solicitud: 'escribir_archivo',
+    nombre: '',
+    nombre_archivo: '',
+    status: 0,
+    str_error: ''
+}
+"""

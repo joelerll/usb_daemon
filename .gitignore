@@ -1,5 +1,8 @@
 ## c
 bin/*.out
+bin/usb*
+bin/daemon*
+bin/cliente
 obj/*.o
 #lib/lib*
 bin/server
@@ -27,3 +30,10 @@ web_server/mat*
 web_server/fonts/
 p/
 pid_file
+test.txt
+daemonTest
+usb
+Log.txt
+file.txt
+test.txt
+listDis*

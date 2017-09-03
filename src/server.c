@@ -7,10 +7,9 @@
 #include <stdlib.h>
 #include "utils.h"
 
-#define PORT            8888
-#define POSTBUFFERSIZE  800
-#define MAXNAMESIZE     200
-#define MAXANSWERSIZE   8000
+#define POSTBUFFERSIZE  800000
+#define MAXNAMESIZE     2000
+#define MAXANSWERSIZE   800000
 
 #define GET             0
 #define POST            1
@@ -37,15 +36,6 @@ char *page = "";
 
 const char *errorpage =
   "{\"error\": \"metodo no valido\"}";
-
-char * my_strcpy( char *dest,  const char *src )
-{
-    char *p = dest;
-
-    while ( *p++ = *src++ );
-
-    return dest;
-}
 
 static int
 send_page (struct MHD_Connection *connection, const char *page)
@@ -81,6 +71,7 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
       answerstring = malloc (MAXANSWERSIZE);
       if (!answerstring)
         return MHD_NO;
+      // CAMBIAR POR FUNCION
       res = prueba(answerstring);
       snprintf (answerstring, MAXANSWERSIZE, greetingpage, res);
       con_info->answerstring = answerstring;
@@ -101,6 +92,8 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
       answerstring = malloc (MAXANSWERSIZE);
       if (!answerstring)
         return MHD_NO;
+      printf("%s\n", data);
+      // CAMBIAR POR FUNCION
       snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
       con_info->answerstring = answerstring;
     }
@@ -118,6 +111,7 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
       answerstring = malloc (MAXANSWERSIZE);
       if (!answerstring)
         return MHD_NO;
+      // CAMBIAR POR FUNCION
       snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
       con_info->answerstring = answerstring;
     }
@@ -151,10 +145,6 @@ static void request_completed (void *cls, struct MHD_Connection *connection, voi
 static int answer_to_connection (void *cls, struct MHD_Connection *connection, const char *url, const char *method,const char *version, const char *upload_data,size_t *upload_data_size, void **con_cls)
 {
   url_tmp = malloc(sizeof(char *));
-  // my_strcpy(url_tmp, url);
-  // strcpy(url_tmp, url);
-  strcpy(url_tmp, url);
-  // printf("%s\n", url_tmp);
   if (NULL == *con_cls)
   {
     struct connection_info_struct *con_info;
@@ -180,6 +170,7 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
     return MHD_YES;
   }
   if (strcmp(method,"GET") == 0 && strcmp("/listar_dispositivos",url) == 0) {
+    // CAMBIAR POR FUNCION listar_dispositivos()
     page = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [{\"nombre\": \"mi_dispotivito\", \"montaje\": \"/home/joel\",\"nodo\": \"/dev/ddd\",\"id\": \"vendor:device\"},{\"nombre\": \"mi_dispotivito2\", \"montaje\": \"/home/joel/dos\",\"nodo\": \"/dev/bbb\",\"id\": \"vendor:device:2\"}],\"status\": 1,\"str_error\": \"mensaje de arror\"}";
     return send_page (connection, page);
   }

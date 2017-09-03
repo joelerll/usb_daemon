@@ -5,18 +5,11 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 # 5 Simples pasos
 
 ```sh
-> sudo make install 				# instala las dependencias
-> make 								# complila los archivos
-> make daemon						# ejecuta el daemon
-> ./bin/server 5555 				# ejecutar el servidor
+> sudo make install                 # instala las dependencias
+> make                              # complila los archivos
+> make daemon                       # ejecuta el daemon
+> ./bin/server 5555                 # ejecutar el servidor
 > ./client 5555 listar_dispositivos # usar el cliente
-```
-
-# Instalacion
-La siguente instruccion instalara las dependencias necesarias para el proyecto
-
-```sh
-> sudo make install
 ```
 
 # Uso cliente
@@ -34,36 +27,11 @@ Es muy facil, solo ejecutar
 > make kill
 ```
 
-### Correr el cliente web
+# Desarrolladores
 
-1. Ejecutar
-```sh
-> make client
-```
-
-2. Se abrira el navegador por defecto en el puerto 5000
-
-#### Montar el virtual_usb y virtual_usb_2
-
-```sh
-> sudo make mount
-```
-
-Para comprobar que se ha montado correctamente ejecutar:
-
-```sh
-> df -h
-```
-Estara montado en /media/usb_virtual u /media/usb_virtual_2
-
-Aqui podram crear archivos y seran compartidos a todos
-
-
-__Para desmontarlo__
-
-```sh
-> sudo make umount
-```
+* Joel Rodriguez
+* Bosco Andrade
+* Israel Cano
 
 # Dependencias
 

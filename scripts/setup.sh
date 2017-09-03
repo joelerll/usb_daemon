@@ -1,26 +1,26 @@
 ## https://github.com/robertalks/udev-examples
 ## https://github.com/zserge/jsmn/blob/master/example/simple.c
 ## https://www.gnu.org/software/libmicrohttpd/
-
+min=0
 if [ -x "$(command -v make)" ]; then
   echo 'Ya tiene instalado make'
 else
   echo 'Instalando make'
-  apt-get install make
+  apt-get install make -y
 fi
 
 if [ -x "$(command -v gcc)" ]; then
   echo 'Ya tiene instalado gcc'
 else
   echo 'Instalando gcc'
-  apt-get install gcc
+  apt-get install gcc -y
 fi
 
 if [ -x "$(command -v wget)" ]; then
   echo 'Ya tiene instalado wget'
 else
   echo 'Instalando wget'
-  apt-get install wget
+  apt-get install wget -y
 fi
 
 if [ -x "$(command -v git)" ]; then
@@ -31,23 +31,37 @@ else
 fi
 
 ## INSTALANDO libmicrohttpd
-if [ -x "$(command -v libmicrohttpd10)" ]; then
-  echo 'Ya tiene instalado libmicrohttpd'
-else
+libhttp=$(ldconfig -p | grep libmicrohttpd | wc -l)
+
+if [ "$libhttp" -eq  "$min" ]; then
   echo 'Instalando libmicrohttpd'
-  apt-get -y install libmicrohttpd*
+  apt-get install libmicrohttpd* -y 
+else
+  echo 'Ya tiene instalado libmicrohttpd'
 fi
 
 ## INSTALANDO libudev
-if [ -x "$(command -v libudev1)" ]; then
-  echo 'Ya tiene instalado libudev'
-else
+libudev=$(ldconfig -p | grep libudev-dev | wc -l)
+
+if [ "$libudev" -eq  "$min" ]; then
   echo 'Instalando libudev'
-  apt-get install libudev-dev
+  apt-get install libudev-dev -y
+else
+  echo 'Ya tiene instalado libudev'
+fi
+
+libjson=$(ldconfig -p | grep libjson0 | wc -l)
+
+if [ "$libjson" -eq  "$min"  ]; then
+  echo 'Instalando libjson'
+  apt-get install libjson0 libjson0-dev -y
+else
+  echo 'Ya tiene instalado libjson'
 fi
 
 ## dependencias en python
 echo "Instalando dependencias de python pip 3"
+
 if [ -x "$(command -v pip3)" ]; then
   echo 'Ya tiene instalado pip python3'
 else
@@ -74,12 +88,12 @@ fi
 echo "Instalando dependencias de python3"
 pip3 install -r requirements.txt
 
-echo "Terminado de instalar"
 echo "
 _   ,--()
  ( )-'-.------|>
   \"     \`--[]
 "
+echo ""
 ## ejecutar servidor en background
 ## ejecutar ingresar al virtualenv python
 
