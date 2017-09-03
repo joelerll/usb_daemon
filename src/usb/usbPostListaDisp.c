@@ -7,6 +7,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include "usbFunctions.h"
 
 char * readFile();
 
@@ -16,7 +17,7 @@ void error(char *msg)
     exit(-1);
 }
 
-int main(){
+void server(){
 
   // definicion de las variables
   int sockfd, client_socket;
@@ -45,27 +46,18 @@ int main(){
 
   listen(sockfd,100000);
   
-  //Lectura de archivo que se mantendrá actualizado por el daemon
-
-  FILE *fp;
-  char json[50000] = "";
-  fp = fopen("src/usb/listaDispositivos.txt","r");
-  fseek(fp, 0, SEEK_SET);
-  /* Read and display data */
-  fread(json,strlen(json)+1, 50000, fp);
-
-  printf("JSON: %s",json);
-
   while(1){
     client_socket = accept(sockfd, NULL, NULL);
     if (client_socket < 0) {
       close(client_socket);
-      printf("Erro al conectarse \n");
+      printf("Error al conectarse \n");
     }
-    write(client_socket,json,10*sizeof(json));    
+    //pthread_mutex_lock(&candado);
+    write(client_socket,GLOBALJSON,10*sizeof(GLOBALJSON));    
+    //pthread_mutex_unlock(&candado);
   }
     
-  close(client_socket);
+  //close(client_socket);
   return 0;
   
 }

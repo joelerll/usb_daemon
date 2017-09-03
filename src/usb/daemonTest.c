@@ -5,10 +5,10 @@
 #include <sys/stat.h>
 #include <string.h>
 #include "usbFunctions.h"
+#include <pthread.h>
 
 int main(int argc, char* argv[])
 {
-    FILE *fp= NULL;
     pid_t process_id = 0;
     pid_t sid = 0;
     // Create child process
@@ -43,18 +43,24 @@ int main(int argc, char* argv[])
     //close(STDOUT_FILENO);
     close(STDERR_FILENO);
     struct udev* udev = udev_new();
+    memset(GLOBALJSON,0,sizeof(GLOBALJSON));
+
+    pthread_t *hilo2;
+    int status = pthread_create(hilo2, NULL, server, NULL);
+    if (status < 0) {
+        fprintf(stderr, "Error al crear el hilo\n");
+        exit(-1);
+    }
+
     while (1)
     {
-        //Dont block context switches, let the process sleep for some time
-        
+        //Hacer hilo para la lista
         listaDispConectados *listaDisp = (getListaDispConectados(udev));
         parseToJson(listaDisp);
-        
+    
         udev_unref(udev);
-        fflush(fp);
+        //Hilo para servidor
         sleep(1);
-        // Implement and call some function that does core work for this daemon.
     }
-    fclose(fp);
     return (0);
 }
