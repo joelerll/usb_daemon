@@ -28,8 +28,8 @@ client:
 	python3 server.py
 
 # INICIO - PRUEBA DE daemonTest
-daemonTest: daemonTest.o usb.o jsonUSB.o 
-	gcc -Wall obj/usb.o obj/daemonTest.o obj/jsonUSB.o -o bin/daemonTest -ludev -ljson
+daemonTest: daemonTest.o usbPostListaDisp.o usb.o jsonUSB.o 
+	gcc -Wall -pthread obj/usb.o obj/daemonTest.o obj/usbPostListaDisp.o obj/jsonUSB.o -o bin/daemonTest -ludev -ljson
 
 usb.o: src/usb/usb.c
 	gcc -c -Wall  -Iinclude/ src/usb/usb.c -o obj/usb.o -ludev
@@ -37,15 +37,17 @@ usb.o: src/usb/usb.c
 jsonUSB.o: src/usb/jsonUSB.c include/usbFunctions.h
 	gcc -c -Wall -Iinclude/ src/usb/jsonUSB.c -o obj/jsonUSB.o -ljson
 
+usbPostListaDisp.o: src/usb/usbPostListaDisp.c include/usbFunctions.h
+	gcc -c -Wall -Iinclude/ src/usb/usbPostListaDisp.c -o obj/usbPostListaDisp.o
+
 daemonTest.o: src/usb/daemonTest.c include/usbFunctions.h
 	gcc -c -Wall -Iinclude/ src/usb/daemonTest.c -o obj/daemonTest.o -ludev
+
+
 
 # FIN - PRUEBA DE daemonTest
 
 # INICIO - PRUEBA USBSOCKET
-
-usbPostListaDisp:
-	gcc -Wall src/usb/usbPostListaDisp.c -o bin/usbPostListaDisp
 
 clientUSB: 
 	gcc -Wall src/usb/pruebaCliente.c -o bin/cliente

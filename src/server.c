@@ -9,7 +9,7 @@
 
 #define POSTBUFFERSIZE  800000
 #define MAXNAMESIZE     2000
-#define MAXANSWERSIZE   800000
+#define MAXANSWERSIZE   80000
 
 #define GET             0
 #define POST            1
@@ -33,6 +33,9 @@ const char *greetingpage =
   "%s";
 
 char *page = "";
+
+
+char *listar_dispositivos_respo = "{\"dispositivos\": %s, \"status\": 1}";
 
 const char *errorpage =
   "{\"error\": \"metodo no valido\"}";
@@ -66,14 +69,12 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
     printf("nombrar dispotivos\n");
     if ((size > 0)) // && (size <= MAXNAMESIZE)
     {
-      char *res;
       char *answerstring;
       answerstring = malloc (MAXANSWERSIZE);
       if (!answerstring)
         return MHD_NO;
       // CAMBIAR POR FUNCION
-      res = prueba(answerstring);
-      snprintf (answerstring, MAXANSWERSIZE, greetingpage, res);
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
       con_info->answerstring = answerstring;
     }
     else
@@ -171,8 +172,11 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
   }
   if (strcmp(method,"GET") == 0 && strcmp("/listar_dispositivos",url) == 0) {
     // CAMBIAR POR FUNCION listar_dispositivos()
+    char *a = prueba();
+    char *page_tmp = malloc(MAXANSWERSIZE);
+    snprintf (page_tmp, MAXANSWERSIZE, listar_dispositivos_respo, a);
     page = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [{\"nombre\": \"mi_dispotivito\", \"montaje\": \"/home/joel\",\"nodo\": \"/dev/ddd\",\"id\": \"vendor:device\"},{\"nombre\": \"mi_dispotivito2\", \"montaje\": \"/home/joel/dos\",\"nodo\": \"/dev/bbb\",\"id\": \"vendor:device:2\"}],\"status\": 1,\"str_error\": \"mensaje de arror\"}";
-    return send_page (connection, page);
+    return send_page (connection, page_tmp);
   }
 
   if (0 == strcmp (method, "POST") && (strcmp("/escribir_archivo",url) == 0 || strcmp("/nombrar_dispositivo",url) == 0 || strcmp("/leer_archivo",url) == 0))

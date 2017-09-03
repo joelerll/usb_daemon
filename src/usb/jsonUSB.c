@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include "usbFunctions.h"
 
-char *parseToJson(listaDispConectados *listaDisp){
+void parseToJson(listaDispConectados *listaDisp){
     
     FILE *fp= NULL;
-    char json[50000] = "Dispositivos:[";
+    char json[50000] = "[";
     
     for(int i=0; i<listaDisp->n_Dispositivos; i++){
     
-        struct InfoUSB *info = *((listaDisp->lista));
+        struct InfoUSB *info = *((listaDisp->lista)+i);
         /*Creating a json object*/
         json_object * jobj = json_object_new_object();    
         
@@ -33,11 +33,9 @@ char *parseToJson(listaDispConectados *listaDisp){
         if(i!=(listaDisp->n_Dispositivos-1)) strcat(json,",");
     }   
     strcat(json,"]");
+    //printf("%s",json);
+    strcpy(GLOBALJSON,json);
+    
+    //printf("--ACT: %s\n",i);
 
-    fp = fopen ("./src/usb/listaDispositivos.txt", "w+");
-    fprintf(fp,json);
-    fclose(fp);
-    //printf("\n%s",json);
-    //printf("\n-----------------------------------------------------------\n");
-    return json;
 }

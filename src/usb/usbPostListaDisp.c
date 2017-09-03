@@ -7,8 +7,10 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include "usbFunctions.h"
 
-char * readFile();
+#define SERV_TCP_PORT 8236 /* server's port number */
+#define MAX_SIZE 5000
 
 void error(char *msg)
 {
@@ -16,56 +18,42 @@ void error(char *msg)
     exit(-1);
 }
 
-int main(){
+void server(){
+  printf("servidor \n");
+  int sockfd, newsockfd, clilen;
+  struct sockaddr_in cli_addr, serv_addr;
+  int port;
+  char string[MAX_SIZE];
+  int len;
 
-  // definicion de las variables
-  int sockfd, client_socket;
-  struct sockaddr_in serv_addr;
-  
-  char *ip = "127.0.0.1";
-  char *puerto = "5001";
-  
-  // inicializacion del socket
-  sockfd = socket(AF_INET, SOCK_STREAM, 0);
-  
-  if (sockfd < 0) {
-    error("ERROR al iniciar el socket");
+  port = SERV_TCP_PORT;
+
+  if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+     perror("can't open stream socket");
+     exit(1);
   }
 
-  // set el puerto y los datos necesarios para inicializar el server
-  memset(&serv_addr, 0, sizeof(serv_addr));
+  bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = inet_addr(ip);
-  serv_addr.sin_port = htons(atoi(puerto));
-
-  //Enlace 
-  if (bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
-    error("ERROR en bind socket");
-  }
-
-  listen(sockfd,100000);
+  serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  serv_addr.sin_port = htons(port);
   
-  //Lectura de archivo que se mantendrá actualizado por el daemon
-
-  FILE *fp;
-  char json[50000] = "";
-  fp = fopen("src/usb/listaDispositivos.txt","r");
-  fseek(fp, 0, SEEK_SET);
-  /* Read and display data */
-  fread(json,strlen(json)+1, 50000, fp);
-
-  printf("JSON: %s",json);
-
-  while(1){
-    client_socket = accept(sockfd, NULL, NULL);
-    if (client_socket < 0) {
-      close(client_socket);
-      printf("Erro al conectarse \n");
-    }
-    write(client_socket,json,10*sizeof(json));    
+  if(bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+     perror("can't bind local address");
+     exit(1);
   }
+  listen(sockfd, 5);
+
+  for(;;) {
+     clilen = sizeof(cli_addr);
+     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
     
-  close(client_socket);
-  return 0;
-  
+     if(newsockfd < 0) {
+        perror("can't bind local address");
+     }
+
+     write(newsockfd, GLOBALJSON, 10*sizeof(GLOBALJSON));
+     string[len] = 0;
+     close(newsockfd);
+  }  
 }
