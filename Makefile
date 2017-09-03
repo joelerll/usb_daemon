@@ -3,7 +3,7 @@ all: server daemon
 server: src/server.c
 	gcc -Wall -Iinclude src/server.c src/json.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
 
-daemon: testDaemon
+daemon: daemonTest
 	./bin/daemonTest
 
 kill:
@@ -26,17 +26,31 @@ client:
 	/bin/bash scripts/client.sh
 	# source .virtualenv/bin/activate
 	python3 server.py
-# INICIO - PRUEBA DE DAEMON
-testDaemon: daemon.o usb.o 
-	gcc obj/usb.o obj/daemon.o -o bin/daemonTest -ludev
+
+# INICIO - PRUEBA DE daemonTest
+daemonTest: daemonTest.o usb.o jsonUSB.o 
+	gcc -Wall obj/usb.o obj/daemonTest.o obj/jsonUSB.o -o bin/daemonTest -ludev -ljson
 
 usb.o: src/usb/usb.c
 	gcc -c -Wall  -Iinclude/ src/usb/usb.c -o obj/usb.o -ludev
 
-daemon.o: src/usb/daemon.c include/usbFunctions.h
-	gcc -c -Wall -Iinclude/ src/usb/daemon.c -o obj/daemon.o -ludev
-# FIN - PRUEBA DE DAEMON
+jsonUSB.o: src/usb/jsonUSB.c include/usbFunctions.h
+	gcc -c -Wall -Iinclude/ src/usb/jsonUSB.c -o obj/jsonUSB.o -ljson
 
+daemonTest.o: src/usb/daemonTest.c include/usbFunctions.h
+	gcc -c -Wall -Iinclude/ src/usb/daemonTest.c -o obj/daemonTest.o -ludev
+
+# FIN - PRUEBA DE daemonTest
+
+# INICIO - PRUEBA USBSOCKET
+
+usbPostListaDisp:
+	gcc -Wall src/usb/usbPostListaDisp.c -o bin/usbPostListaDisp
+
+clientUSB: 
+	gcc -Wall src/usb/pruebaCliente.c -o bin/cliente
+
+# FIN - USB SOCKET
 clean:
 	rm -rf obj/*.o bin/server lib/*.so obj/*.o web_server/bootstrap.min.* web_server/jquery.min.* web_server/vue.* web_server/bootstrap.min.* web_server/materialize.min* web_server/fonts
 

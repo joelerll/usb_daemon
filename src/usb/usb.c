@@ -7,7 +7,7 @@
 
 //gcc -Wall -Iinclude/ src/usb/usb.c -o bin/usb -ludev
 
-InfoUSB *crearPlantillaInformacion(char *usbDirMount, char *usbNodo, char *idVendor, char *idProduct){
+InfoUSB *crearPlantillaInformacion(char *usbDirMount,char *usbNodo,char *idVendor,char *idProduct){
     InfoUSB *info = (InfoUSB *)malloc(sizeof(InfoUSB));
     info->usbDirMount=usbDirMount;
     info->usbNodo=usbNodo;
@@ -67,20 +67,25 @@ listaDispConectados *getListaDispConectados(struct udev* udev){
 
 		if (block && scsi_disk && usb){   
             //Se crea la estructura que contiene la información del usb
+
             char *usbNodo = (char *)malloc(sizeof(char));
-            char *usbDirMount = (char *)malloc(sizeof(char));
+            //char *usbDirMount = (char *)malloc(sizeof(char));
             char *idVendor = (char *)malloc(sizeof(char));
             char *idProduct = (char *)malloc(sizeof(char));
 
-            strcpy(usbNodo,(char *) udev_device_get_devnode(block));
-            strcpy(usbDirMount,getUSBDirMount(usbNodo));
+            strcpy(usbNodo,(char *)udev_device_get_devnode(block));
+            //*usbDirMount = getUSBDirMount(usbNodo);
+            //strcpy(usbDirMount,getUSBDirMount(usbNodo));
             strcpy(idVendor,(char *)udev_device_get_sysattr_value(usb, "idVendor"));
             strcpy(idProduct,(char *)udev_device_get_sysattr_value(usb, "idProduct"));
+            
+            char *usbDirMount = getUSBDirMount(usbNodo);
 
             struct InfoUSB *info = crearPlantillaInformacion(usbDirMount,usbNodo,idVendor,idProduct);                
             //Se guarda la plantilla de cada usb en la lista
             *((listaDisp->lista)+iterator) = info;
             iterator++;
+            
 		}
 		if (block) udev_device_unref(block);
 		if (scsi_disk) udev_device_unref(scsi_disk);
@@ -110,30 +115,35 @@ char *getUSBDirMount(char *usbNodo){
             //  /dev/sdb
             char a = *(usbNodo+i);
             //  /dev/sdb1
-            char b = *(me->mnt_fsname+i);
+            char b = *((me->mnt_fsname)+i);
             if( a!= b){
                 var = 1;
                 break;
             }  
         }
-        if(var == 0) return me->mnt_dir;
+        if(var == 0){
+            char *retorno = (char *)malloc(strlen(me->mnt_dir)*sizeof(char));
+            //printf("%i",strlen(me->mnt_dir));
+            strcpy(retorno,me->mnt_dir);
+            //printf("%s",me->mnt_dir);
+            //fclose(fp);
+            endmntent( fp );
+            return retorno;
+        } 
     }
     endmntent( fp );
     return NULL;
 }
 
 //Función que imprime los dispositivos conectados con su respectiva información.
-char *imprimirListaDispositivos(listaDispConectados *listaDisp){
+void imprimirListaDispositivos(listaDispConectados *listaDisp){
 
     printf("----------------------------------------------------------------------\n\n");
     printf("\tLISTA DE DISPOSITIVOS CONECTADOS\n\n");
 
-    char *retorno  = malloc(sizeof(char));
-
     for(int i=0 ; i<listaDisp->n_Dispositivos; i++){
         struct InfoUSB *prueba = *((listaDisp->lista)+i);
         printf("\t\t%i) Nodo     : %s\n",i+1,prueba->usbNodo);
-        strcat(retorno,"Nodo     : ");
         printf("\t\t   Montaje  : %s\n",prueba->usbDirMount);
         printf("\t\t   idVendor : %s\n",prueba->idVendor);
         printf("\t\t   idProduct: %s",prueba->idProduct);
@@ -141,14 +151,6 @@ char *imprimirListaDispositivos(listaDispConectados *listaDisp){
     }
 
     printf("----------------------------------------------------------------------\n\n");
-    
-    return retorno;
+
 
 }
-
-/*int main(){
-    struct udev* udev = udev_new();
-    imprimirListaDispositivos(getListaDispConectados(udev));
-    udev_unref(udev);
-    return 0;
-}*/

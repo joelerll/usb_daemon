@@ -21,7 +21,7 @@
 
 PUERTO_SOCKET_DAEMON=8080
 if [ $(pgrep  -f daemonTest) ]; then
-	PID_NAME=$(pgrep  -f server.out)
+	PID_NAME=$(pgrep  -f daemonTest)
 	kill $PID_NAME
 	echo "Proceso daemon terminado"
 	fuser -k $PUERTO_SOCKET_DAEMON/tcp
