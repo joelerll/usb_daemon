@@ -20,8 +20,8 @@
 # fi
 
 PUERTO_SOCKET_DAEMON=8080
-if [ $(pgrep  -f daemonTest) ]; then
-	PID_NAME=$(pgrep  -f daemonTest)
+if [ $(pgrep  -f usbDaemon) ]; then
+	PID_NAME=$(pgrep  -f usbDaemon)
 	kill $PID_NAME
 	echo "Proceso daemon terminado"
 	fuser -k $PUERTO_SOCKET_DAEMON/tcp

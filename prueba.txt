@@ -1,1 +1,0 @@
-Dispositivos:[{ "nombre": "", "idVendor": "058f", "idProduct": "6387", "montaje": "\/media\/boscoand\/UBUNTU 16_0", "nodo": "\/dev\/sdb" }]Dispositivos:[{ "nombre": "", "idVendor": "058f", "idProduct": "6387", "montaje": "\/media\/boscoand\/UBUNTU 16_0", "nodo": "\/dev\/sdb" }]
