@@ -7,11 +7,14 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <signal.h>
-#include "usbFunctions.h"
 #include <json/json.h>
+#include <pthread.h>
+#include <libudev.h>
+#include "usbController.h"
+#include "usbFunctions.h"
 #include "usbServer.h"
 #include "usbJson.h"
-#include <pthread.h>
+
 
 #define SERV_TCP_PORT 8237 /* server's port number */
 #define MAX_SIZE 5000
@@ -48,13 +51,13 @@ void *runUsbServer(){
         fprintf(stderr, "udev_new() failed\n");
     }
     
-    doHiloDaemon();
+    doHiloActDispositivos();
     while(1) {    
         //printf("%s",json);
         client_socket = accept(sockfd, NULL, NULL);
         if (client_socket < 0) {
             close(client_socket);
-            printf("Erro al conectarse \n");
+            printf("Error al conectarse \n");
         }
 
         //Se lee solicitud
@@ -66,21 +69,38 @@ void *runUsbServer(){
     }   
 }
 
-void listarDispositivos(int client_socket){
-    write(client_socket,json,10*sizeof(json));    
-    close(client_socket);
+void doHilo(){
+    pthread_t hiloServerUsb = 0;
+    int status = 0;
+    fseek(stdin,0,SEEK_END);
+    status = pthread_create(&hiloServerUsb, NULL, runUsbServer, NULL);
+    if (status < 0) {
+        printf("Error al crear el hilo\n");
+    }    
+    pthread_join(hiloServerUsb,NULL);
 }
 
-void nombrarDispositivo(int client_socket, char *JSONSolicitud){
-
+void doHiloActDispositivos(){
+    pthread_t hiloDaemon = 0;
+    int status = 0;
+    fseek(stdin,0,SEEK_END);
+    status = pthread_create(&hiloDaemon, NULL, enumerarDispositivos, NULL);
+    if (status < 0) {
+        printf("Error al crear el hilo\n");
+    }    
+    //pthread_join(hiloDaemon,NULL);
 }
 
-void leerArchivo(int client_socket, char *JSONSolicitud){
-
-}
-
-void escribiArchivo(int client_socket, char *JSONSolicitud){
-
+void *enumerarDispositivos(){
+    struct udev* udev = udev_new();
+    if (!udev) {
+        fprintf(stderr, "udev_new() failed\n");
+    }
+    while(1){
+        enumerate_devices(udev);
+        //printf("%s",json);
+    }
+    udev_unref(udev);
 }
 
 void analizarSolicitud(int client_socket, char *JSONSolicitud){
@@ -99,39 +119,21 @@ void analizarSolicitud(int client_socket, char *JSONSolicitud){
     if(strcmp(tipoSolicitud,"escribir_archivo")==0){
 
     }
+}
+
+void listarDispositivos(int client_socket){
+    write(client_socket,json,sizeof(json));    
+    close(client_socket);
+}
+
+void nombrarDispositivo(int client_socket, char *JSONSolicitud){
 
 }
 
-void doHilo(){
-    pthread_t hiloServerUsb = 0;
-    int status = 0;
-    fseek(stdin,0,SEEK_END);
-    status = pthread_create(&hiloServerUsb, NULL, runUsbServer, NULL);
-    if (status < 0) {
-        printf("Error al crear el hilo\n");
-    }    
-    pthread_join(hiloServerUsb,NULL);
+void leerArchivo(int client_socket, char *JSONSolicitud){
+
 }
 
-void doHiloDaemon(){
-    pthread_t hiloDaemon = 0;
-    int status = 0;
-    fseek(stdin,0,SEEK_END);
-    status = pthread_create(&hiloDaemon, NULL, runDaemon, NULL);
-    if (status < 0) {
-        printf("Error al crear el hilo\n");
-    }    
-    //pthread_join(hiloDaemon,NULL);
-}
+void escribiArchivo(int client_socket, char *JSONSolicitud){
 
-void *runDaemon(){
-    struct udev* udev = udev_new();
-    if (!udev) {
-        fprintf(stderr, "udev_new() failed\n");
-    }
-    while(1){
-        enumerate_devices(udev);
-        printf("%s",json);
-    }
-    udev_unref(udev);
 }
