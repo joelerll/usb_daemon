@@ -15,21 +15,3 @@ struct InfoUSB *crearInfoUsb(char *usbDirMount, char *usbNodo, char *idVendor, c
 
     return info;
 }
-
-void listarDispositivos(int client_socket){
-    printf("%s",json);
-    write(client_socket,json,10*sizeof(json));    
-    close(client_socket);
-}
-
-void nombrarDispositivo(int client_socket, char *JSONSolicitud){
-
-}
-
-void leerArchivo(int client_socket, char *JSONSolicitud){
-
-}
-
-void escribiArchivo(int client_socket, char *JSONSolicitud){
-
-}

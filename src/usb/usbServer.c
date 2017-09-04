@@ -43,51 +43,60 @@ void *runUsbServer(){
     // FIN inicializar socket
     listen(sockfd,5);
   
-    while(1) {
+    struct udev* udev = udev_new();
+    if (!udev) {
+        fprintf(stderr, "udev_new() failed\n");
+    }
+    
+    doHiloDaemon();
+    while(1) {    
+        //printf("%s",json);
         client_socket = accept(sockfd, NULL, NULL);
         if (client_socket < 0) {
             close(client_socket);
             printf("Erro al conectarse \n");
         }
-        write(client_socket,"sssssss",10*sizeof("sssssss"));    
-        close(client_socket);
+
         //Se lee solicitud
-        //read(client_socket, solicitud, 10*sizeof(solicitud));
-        //printf("lectura%s",solicitud);
-        //Se analiza solicitud
-        //analizarSolicitud(client_socket,solicitud);
-        //
-        //string[len] = 0;
+        read(client_socket, solicitud, 10*sizeof(solicitud));
+        printf("Solicitud: %s",solicitud);
+        //Se analiza solicitud y de acuerdo a eso se responde lo deseado
+        analizarSolicitud(client_socket,solicitud);
+        close(client_socket);
     }   
 }
 
+void listarDispositivos(int client_socket){
+    write(client_socket,json,10*sizeof(json));    
+    close(client_socket);
+}
+
+void nombrarDispositivo(int client_socket, char *JSONSolicitud){
+
+}
+
+void leerArchivo(int client_socket, char *JSONSolicitud){
+
+}
+
+void escribiArchivo(int client_socket, char *JSONSolicitud){
+
+}
 
 void analizarSolicitud(int client_socket, char *JSONSolicitud){
-    //Solo de prueba porque no tengo formato Json de cano
-    // int i = 0, j = 1;
-    // char prueba[50001];
-
-    // while(*(JSONSolicitud+j) != ']'){
-    //     //*(prueba+i) = *(JSONSolicitud+j);
-    //     prueba[i] = *(JSONSolicitud+j);
-    //     i++;
-    //     j++;
-    // }
-    // *(prueba+i) = '\0';
-    //
 
     char *tipoSolicitud = getTipoSolicitud(JSONSolicitud);
 
-    if(strcmp(tipoSolicitud,"")){
+    if(strcmp(tipoSolicitud,"listar_dispositivos")==0){
         listarDispositivos(client_socket);
     }
-    if(strcmp(tipoSolicitud,"nombrar_dispositivo")){
+    if(strcmp(tipoSolicitud,"nombrar_dispositivo")==0){
 
     }
-    if(strcmp(tipoSolicitud,"leer_archivo")){
+    if(strcmp(tipoSolicitud,"leer_archivo")==0){
 
     }
-    if(strcmp(tipoSolicitud,"escribir_archivo")){
+    if(strcmp(tipoSolicitud,"escribir_archivo")==0){
 
     }
 
@@ -102,4 +111,27 @@ void doHilo(){
         printf("Error al crear el hilo\n");
     }    
     pthread_join(hiloServerUsb,NULL);
+}
+
+void doHiloDaemon(){
+    pthread_t hiloDaemon = 0;
+    int status = 0;
+    fseek(stdin,0,SEEK_END);
+    status = pthread_create(&hiloDaemon, NULL, runDaemon, NULL);
+    if (status < 0) {
+        printf("Error al crear el hilo\n");
+    }    
+    //pthread_join(hiloDaemon,NULL);
+}
+
+void *runDaemon(){
+    struct udev* udev = udev_new();
+    if (!udev) {
+        fprintf(stderr, "udev_new() failed\n");
+    }
+    while(1){
+        enumerate_devices(udev);
+        printf("%s",json);
+    }
+    udev_unref(udev);
 }
