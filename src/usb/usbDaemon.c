@@ -8,11 +8,15 @@
 #include <sys/stat.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include "usbServer.h"
+#include "usbJson.h"
 
 //Principal
+void *runDaemon();
+void doHiloDaemon();
 
 int main(void){
-
+    //Proceso daemon
     pid_t process_id = 0;
     pid_t sid = 0;
     
@@ -34,18 +38,31 @@ int main(void){
 
     Lista_Inicializar(&listaUsb);
 
+    doHiloDaemon();
+    doHilo();
+    
+    return 0;
+}
+
+void doHiloDaemon(){
+    pthread_t hiloDaemon = 0;
+    int status = 0;
+    fseek(stdin,0,SEEK_END);
+    status = pthread_create(&hiloDaemon, NULL, runDaemon, NULL);
+    if (status < 0) {
+        printf("Error al crear el hilo\n");
+    }    
+    pthread_join(hiloDaemon,NULL);
+}
+
+void *runDaemon(){
     struct udev* udev = udev_new();
     if (!udev) {
         fprintf(stderr, "udev_new() failed\n");
-        return 1;
     }
-
     while(1){
         enumerate_devices(udev);
-        sleep(1);
+        sleep(3);
     }
-
     udev_unref(udev);
-    return 0;
-
 }

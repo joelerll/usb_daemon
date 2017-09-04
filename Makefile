@@ -44,8 +44,8 @@ client:
 # 	gcc -c -Wall -Iinclude/ src/usb/daemonTest.c -o obj/daemonTest.o -ludev
 
 
-usb: usbController.o usbDaemon.o usbFunctions.o usbLista.o usbJson.o
-	gcc -Wall obj/usb/*.o -o bin/usbDaemon -ludev -ljson
+usb: usbController.o usbDaemon.o usbFunctions.o usbLista.o usbJson.o usbServer.o
+	gcc -Wall obj/usb/*.o -o bin/usbDaemon -ludev -ljson -pthread
 
 usbDaemon.o: src/usb/usbDaemon.c include/usb/*.h
 	gcc -c -Wall -Iinclude/usb/ src/usb/usbDaemon.c -o obj/usb/usbDaemon.o
@@ -61,6 +61,9 @@ usbLista.o: src/usb/usbLista.c
 
 usbJson.o: src/usb/usbJson.c
 	gcc -c -Wall -Iinclude/usb/ src/usb/usbJson.c -o obj/usb/usbJson.o -ljson
+
+usbServer.o: src/usb/usbServer.c
+	gcc -c -Wall -Iinclude/usb/ src/usb/usbServer.c -o obj/usb/usbServer.o -ljson
 
 
 # FIN - PRUEBA DE daemonTest
