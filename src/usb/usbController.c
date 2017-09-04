@@ -73,7 +73,7 @@ void enumerate_devices(struct udev* udev)
 
     }
     eliminarRetirado();
-    //print_device();
+    print_device();
     encerarEstado();
     //Cada vez que se actualiza la lista, se actualiza el json 
     toJson();
@@ -84,13 +84,14 @@ void actLista(char *nodo, struct udev_device* dev){
     char *product = malloc(sizeof(char));
     strcpy(product,(char *)udev_device_get_sysattr_value(dev, "idProduct"));
     ElementoLista *elem = NULL;
-    elem = Lista_BuscarXNodo(&listaUsb,product);
+    elem = Lista_BuscarXiD(&listaUsb,product);
     if(elem==NULL){
         anadirLista(nodo,dev);
     }else{
         struct InfoUSB *info4 = (struct InfoUSB *)elem->objeto;
         //Se actualiza mount por si se encuentra vacío.
         char *mount = getMount(nodo);
+        printf("mount: %s",mount);
         info4->usbDirMount = mount;
         //
         info4->estado = 1;

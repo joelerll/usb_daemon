@@ -35,9 +35,10 @@ void toJson(){
         if(Lista_Siguiente(&listaUsb, elem)!=NULL) strcat(json,",");
     }   
     strcat(json,"]");
-    //printf("--ACT: %s",json);
+    printf("--ACT: %s",json);
 }
 
+//Devuelve el tipo de solicitud
 char *getTipoSolicitud(char *jsonSolicitud){
 
     json_object * jobj = json_tokener_parse(jsonSolicitud);
@@ -61,4 +62,31 @@ char *getTipoSolicitud(char *jsonSolicitud){
     }
     return "";
 
+}
+
+//Devuelve el valor del campo n del JSON que le ingresa
+char *getValuePorCampo(char *JSON, int nCampo) {
+
+    int i=1;
+    json_object * jobj = json_tokener_parse(JSON);
+    enum json_type type;
+    json_object_object_foreach(jobj, key, val) {
+        type = json_object_get_type(val);
+        switch (type) {
+        case json_type_string: 
+            //Devuelve el primer valor que por defecto siempre será 
+            //la función de la solicitud
+            if(i==nCampo) return (char *)json_object_get_string((json_object *)val);
+            i++;
+            //printf ("\n%s-%s\n",json_object_get_string((json_object *)key),
+            //                    json_object_get_string((json_object *)val));
+            break;
+        
+        default:
+            printf("no es string");
+            printf("%s",key);
+            break;
+        }
+    }
+    return "";
 }

@@ -111,7 +111,7 @@ void analizarSolicitud(int client_socket, char *JSONSolicitud){
         listarDispositivos(client_socket);
     }
     if(strcmp(tipoSolicitud,"nombrar_dispositivo")==0){
-
+        nombrarDispositivo(client_socket,JSONSolicitud);
     }
     if(strcmp(tipoSolicitud,"leer_archivo")==0){
 
@@ -121,19 +121,3 @@ void analizarSolicitud(int client_socket, char *JSONSolicitud){
     }
 }
 
-void listarDispositivos(int client_socket){
-    write(client_socket,json,sizeof(json));    
-    close(client_socket);
-}
-
-void nombrarDispositivo(int client_socket, char *JSONSolicitud){
-
-}
-
-void leerArchivo(int client_socket, char *JSONSolicitud){
-
-}
-
-void escribiArchivo(int client_socket, char *JSONSolicitud){
-
-}

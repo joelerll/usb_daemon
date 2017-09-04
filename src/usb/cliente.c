@@ -40,8 +40,12 @@ int main(int argc, char *argv[]){
     }
 
     /* se escribe la solicitud en el socket */
-    char solicitudEjemplo[5000] = "{ \"solicitud\": \"listar_dispositivos\" }";
-    
+    //Prueba listarDispositivos
+    //char solicitudEjemplo[5000] = "{ \"solicitud\": \"listar_dispositivos\" }";
+    //Prueba nombrarDispositivos
+    char solicitudEjemplo[5000] = "{ \"solicitud\": \"nombrar_dispositivos\" , \"nodo\": \"/dev/sdb\", \"nombre\": \"PRUEBA_DISPOSITIVO\"}";
+
+
     int n = write(sockfd,solicitudEjemplo,strlen(solicitudEjemplo));
     if (n < 0)
          error("ERROR writing to socket");

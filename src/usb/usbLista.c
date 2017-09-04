@@ -107,13 +107,27 @@ ElementoLista *Lista_Siguiente(ListaEnlazada *lista, ElementoLista *elemento){
 	}
 }
 
-ElementoLista *Lista_BuscarXNodo(ListaEnlazada *lista, char *idProduct){
+ElementoLista *Lista_BuscarXiD(ListaEnlazada *lista, char *idProduct){
 	if(lista->numeroElementos!=0){ 
   	ElementoLista *elem = NULL;
 		for (elem = Lista_Primero(lista); elem != NULL; elem = Lista_Siguiente(lista, elem)) {
       struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
       //printf("[COMP: %s - %s]\n",info->idProduct,idProduct);
 		  if(strcmp(info->idProduct,idProduct) == 0){
+		    return elem;				
+		  }								
+		}								
+	}									
+	return NULL;
+}
+
+ElementoLista *Lista_BuscarXNodo(ListaEnlazada *lista, char *nodo){
+	if(lista->numeroElementos!=0){ 
+  	ElementoLista *elem = NULL;
+		for (elem = Lista_Primero(lista); elem != NULL; elem = Lista_Siguiente(lista, elem)) {
+      struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
+      //printf("[COMP: %s - %s]\n",info->idProduct,idProduct);
+		  if(strcmp(info->usbNodo,nodo) == 0){
 		    return elem;				
 		  }								
 		}								
