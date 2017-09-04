@@ -38,8 +38,8 @@ int main(void){
 
     Lista_Inicializar(&listaUsb);
 
-    doHiloDaemon();
     doHilo();
+    doHiloDaemon();
     
     return 0;
 }

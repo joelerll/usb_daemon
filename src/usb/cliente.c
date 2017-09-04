@@ -42,11 +42,11 @@ int main(int argc, char *argv[]){
     /* se escribe la solicitud en el socket */
     char solicitudEjemplo[5000] = "{ \"solicitud\": \"\" }";
     
-    int n = write(sockfd,solicitudEjemplo,sizeof(solicitudEjemplo));
-    if (n < 0)
-        error("ERROR writing to socket");
+    // int n = write(sockfd,solicitudEjemplo,sizeof(solicitudEjemplo));
+    // if (n < 0)
+    //     error("ERROR writing to socket");
 
-    read(sockfd, recvBuff, sizeof(recvBuff));
+     read(sockfd, recvBuff, sizeof(recvBuff));
     
     printf("Respuesta: %s",recvBuff);
        

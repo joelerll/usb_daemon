@@ -49,11 +49,13 @@ void *runUsbServer(){
             close(client_socket);
             printf("Erro al conectarse \n");
         }
+        write(client_socket,"sssssss",10*sizeof("sssssss"));    
+        close(client_socket);
         //Se lee solicitud
-        read(client_socket, solicitud, 10*sizeof(solicitud));
+        //read(client_socket, solicitud, 10*sizeof(solicitud));
         //printf("lectura%s",solicitud);
         //Se analiza solicitud
-        analizarSolicitud(client_socket,solicitud);
+        //analizarSolicitud(client_socket,solicitud);
         //
         //string[len] = 0;
     }   
