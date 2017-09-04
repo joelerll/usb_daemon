@@ -35,7 +35,7 @@ void toJson(){
         if(Lista_Siguiente(&listaUsb, elem)!=NULL) strcat(json,",");
     }   
     strcat(json,"]");
-    printf("--ACT: %s",json);
+    //printf("--ACT: %s",json);
 }
 
 //Devuelve el tipo de solicitud
@@ -89,4 +89,27 @@ char *getValuePorCampo(char *JSON, int nCampo) {
         }
     }
     return "";
+}
+
+char *jsonNombrarDipositivosRespuesta(char *solicitudNombrar,int status, char *nombre, char *nodo, char *stErr) {
+
+  json_object * jobj = json_object_new_object();
+
+  json_object *jsonSoli = json_object_new_string(solicitudNombrar);
+  json_object *jsonStatus = json_object_new_int(status);
+  json_object *jsonNombre = json_object_new_string(nombre);
+  json_object *jsonNodo = json_object_new_string(nodo);
+  json_object *jsonError = json_object_new_string(stErr);
+
+  json_object_object_add(jobj,"qwqwqw", jsonSoli);
+  json_object_object_add(jobj,"status", jsonStatus);
+  json_object_object_add(jobj,"nombre", jsonNombre);
+  json_object_object_add(jobj,"nodo", jsonNodo);
+  json_object_object_add(jobj,"error", jsonError);
+
+  //char retorno[50000] = "";
+  //strcpy(retorno,(char *)json_object_to_json_string(jobj));
+    
+  return (char *)json_object_to_json_string(jobj);
+
 }

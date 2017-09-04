@@ -53,27 +53,6 @@ void jsonNombrarDipositivosSolicitud(char *solicitudNombrar, char *nombre, char 
 
 }
 
-void jsonNombrarDipositivosRespuesta(char *solicitudNombrar,int status, char *nombre, char *nodo, char *stErr) {
-
-  json_object * jobj = json_object_new_object();
-
-  json_object *jsonSoli = json_object_new_string(solicitudNombrar);
-  json_object *jsonStatus = json_object_new_int(status);
-  json_object *jsonNombre = json_object_new_string(nombre);
-  json_object *jsonNodo = json_object_new_string(nodo);
-  json_object *jsonError = json_object_new_string(stErr);
-
-  json_object_object_add(jobj,"solicitud", jsonSoli);
-  json_object_object_add(jobj,"status", jsonStatus);
-  json_object_object_add(jobj,"nombre", jsonNombre);
-  json_object_object_add(jobj,"nodo", jsonNodo);
-  json_object_object_add(jobj,"error", jsonError);
-
-  /*Now printing the json object*/
-  printf ("The json object created: %s \n",json_object_to_json_string(jobj));
-
-}
-
 void jsonLeerArchivoSolicitud(char *solicitudLeer, char *nombre, char * nombreArchivo) {
   
   json_object * jobj = json_object_new_object();

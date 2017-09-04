@@ -52,7 +52,7 @@ usbServer.o: src/usb/usbServer.c
 	gcc -c -Wall -Iinclude/usb/ src/usb/usbServer.c -o obj/usb/usbServer.o -ljson
 
 clientTestUsb: 
-	gcc -Wall src/usb/cliente.c -o bin/cliente
+	gcc -Wall src/usb/cliente.c -o bin/cliente -ljson
 
 # FIN - USB SOCKET
 clean:

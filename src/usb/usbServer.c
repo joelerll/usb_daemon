@@ -17,7 +17,8 @@
 
 
 #define SERV_TCP_PORT 8237 /* server's port number */
-#define MAX_SIZE 5000
+
+#define MAX_SIZE 50000
 
 void *runUsbServer(){
     
@@ -26,7 +27,7 @@ void *runUsbServer(){
   int sockfd, client_socket; 
   struct sockaddr_in serv_addr;
   int port;
-  char solicitud[5000];
+  char solicitud[MAX_SIZE];
 
   char *ip = "127.0.0.1";
   

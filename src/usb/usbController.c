@@ -17,10 +17,11 @@ void print_device()
     ElementoLista *elem = NULL;
     for (elem = Lista_Primero(&listaUsb); elem != NULL; elem = Lista_Siguiente(&listaUsb, elem)){
         struct InfoUSB *info4 = (struct InfoUSB *)elem->objeto;
-        printf("[%s %s %s %s]\n",info4->usbDirMount,
-                        info4->usbNodo,
-                        info4->idProduct,
-                        info4->idVendor);
+        printf("[   Nombre   : %s \n\tNodo     : %s \n\tMount    : %s \n\tidProduct: %s \n\tidVendor : %s \n\t]\n",info4->nombre,
+                    info4->usbNodo,
+                    info4->usbDirMount,
+                    info4->idProduct,
+                    info4->idVendor);
     } 
 }
 
@@ -91,7 +92,7 @@ void actLista(char *nodo, struct udev_device* dev){
         struct InfoUSB *info4 = (struct InfoUSB *)elem->objeto;
         //Se actualiza mount por si se encuentra vacío.
         char *mount = getMount(nodo);
-        printf("mount: %s",mount);
+        //printf("mount: %s",mount);
         info4->usbDirMount = mount;
         //
         info4->estado = 1;
@@ -155,6 +156,8 @@ char *getMount(char *usbNodo){
         if(var == 0){
             char *retorno = (char *)malloc(strlen(me->mnt_dir)*sizeof(char));
             strcpy(retorno,me->mnt_dir);
+            //flush(fp);
+            //fclose(fp);
             endmntent( fp );
             return retorno;
         }

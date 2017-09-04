@@ -22,20 +22,36 @@ void listarDispositivos(int client_socket){
     close(client_socket);
 }
 
-// char pruebaNombrarDispositivo[5000] = "{ \"solicitud\": \"nombrar_dispositivos\" ,
-//                                          \"nodo\": \"\/dev\/sdb\",
-//                                          \"nombre\": \"PRUEBA_DISPOSITIVO\"}";
-
 void nombrarDispositivo(int client_socket, char *JSONSolicitud){
+    
     char *nodo = getValuePorCampo(JSONSolicitud,2);
     char *nombre = getValuePorCampo(JSONSolicitud,3);
+    
     //Obtengo el elemento de la lista con el nodo ingresado
     ElementoLista *elem = Lista_BuscarXNodo(&listaUsb,nodo);
+
     if(elem==NULL){
-        write(client_socket,"Si existe",sizeof("Si existe"));    
+        //Función que devuelve json
+        char *respuesta = jsonNombrarDipositivosRespuesta("nombrar_dispositivo",
+                                                -1,
+                                                "",
+                                                "",
+                                                "Dispositivo no conectado");
+        write(client_socket,respuesta,500*sizeof(respuesta));    
     }else{
-        write(client_socket,"No existe",sizeof("No existe"));    
+        struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
+        //Modificar nombre
+        info->nombre = nombre;
+        //Función que devuelve json
+        char *respuesta = (char *) jsonNombrarDipositivosRespuesta("nombrar_dispositivo",
+                                                0,
+                                                info->nombre,
+                                                info->usbNodo,
+                                                "Nombre ingresado con éxito");
+        write(client_socket,respuesta,500*sizeof(respuesta));    
     }
+
+    close(client_socket);
 }
 
 void leerArchivo(int client_socket, char *JSONSolicitud){
