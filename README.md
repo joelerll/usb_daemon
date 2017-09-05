@@ -12,6 +12,8 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 > ./client 5555 listar_dispositivos # usar el cliente
 ```
 
+![ejemplo](output.gif "ejemplo")
+
 # Uso cliente
 
 ```sh

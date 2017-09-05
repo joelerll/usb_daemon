@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <json/json.h>
 
-#define SERV_TCP_PORT 8226
+#define SERV_TCP_PORT 8227
 
 void error(char *msg)
 {

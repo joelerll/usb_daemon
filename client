@@ -88,7 +88,7 @@ def nombrar_dispositivo():
 		req ="{" +  '"solicitud": "nombrar_dispositivo","nodo": "{}", "nombre": "{}"'.format(sys.argv[3].replace('/', '\\/'),sys.argv[4]) + "}" 
 		r = requests.post("http://localhost:{}/nombrar_dispositivo".format(int(sys.argv[1])), data={"nombrar_dispositivo": req})
 		respuesta = json.loads(r.text)
-		print(r.text)
+		# print(r.text)
 		if (respuesta['status'] == 0):
 			resp = []
 			tmp = []
@@ -139,7 +139,7 @@ def escribir_archivo():
 				data = data[2:-1]
 				req ="{" +  '"solicitud": "escribir_archivo","nombre": "{}", "nombre_archivo": "{}", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],bytes, data) + "}"
 				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
-				print(r.text)
+				# print(r.text)
 				respuesta = json.loads(r.text)
 				if (respuesta['status'] == 0):
 					tmp = []
