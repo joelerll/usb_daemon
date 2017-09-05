@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <json/json.h>
 
-#define SERV_TCP_PORT 8237
+#define SERV_TCP_PORT 8225
 
 char *jsonNombrarDipositivosSolicitud(char *solicitudNombrar, char *nodo, char *nombre);
 

@@ -113,6 +113,7 @@ void eliminarRetirado(){
         struct InfoUSB *info4 = (struct InfoUSB *)elem->objeto;
         if(info4->estado == 0){
             Lista_Sacar(&listaUsb,elem);
+            // free(elem);
         }    
     } 
 }

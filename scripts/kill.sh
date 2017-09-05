@@ -19,16 +19,15 @@
 # 	fi
 # fi
 
-PUERTO_SOCKET_DAEMON=8080
+PUERTO_SOCKET_DAEMON=8238
 if [ $(pgrep  -f usbDaemon) ]; then
 	PID_NAME=$(pgrep  -f usbDaemon)
 	kill $PID_NAME
 	echo "Proceso daemon terminado"
-	fuser -k $PUERTO_SOCKET_DAEMON/tcp
+	fuser -k 8237/tcp
 	echo "Matado el pueto del tcp del daemon"
 else
 	echo "> El proceso no existe"
-	echo "> Parece que el archivo tenia un pid que no existe, por favor vuelva a correr el daemon"
 	echo ""
 	echo -e "por favor ejecute \033[92mmake daemon\033[0m"
 	echo ""

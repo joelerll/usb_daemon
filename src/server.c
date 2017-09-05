@@ -62,7 +62,7 @@ send_page (struct MHD_Connection *connection, const char *page)
 
 static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char *key, const char *filename, const char *content_type,const char *transfer_encoding, const char *data, uint64_t off,size_t size)
 {
-  printf("%s\n", url_tmp);
+  // printf("%s\n", url_tmp);
   struct connection_info_struct *con_info = coninfo_cls;
   if (0 == strcmp (key, "nombrar_dispositivo"))
   {
@@ -74,6 +74,9 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
       if (!answerstring)
         return MHD_NO;
       // CAMBIAR POR FUNCION
+      // char *nombre = "asds";
+      nombrar_dispositivo(data);
+      // printf("%s\n", data);
       snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
       con_info->answerstring = answerstring;
     }
@@ -171,10 +174,10 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
     return MHD_YES;
   }
   if (strcmp(method,"GET") == 0 && strcmp("/listar_dispositivos",url) == 0) {
-    // CAMBIAR POR FUNCION listar_dispositivos()
-    char *a = prueba();
+    printf("nombrar dispotivos\n");
+    char *dispositivos = solicitudes_daemon();
     char *page_tmp = malloc(MAXANSWERSIZE);
-    snprintf (page_tmp, MAXANSWERSIZE, listar_dispositivos_respo, a);
+    snprintf (page_tmp, MAXANSWERSIZE, listar_dispositivos_respo, dispositivos);
     page = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [{\"nombre\": \"mi_dispotivito\", \"montaje\": \"/home/joel\",\"nodo\": \"/dev/ddd\",\"id\": \"vendor:device\"},{\"nombre\": \"mi_dispotivito2\", \"montaje\": \"/home/joel/dos\",\"nodo\": \"/dev/bbb\",\"id\": \"vendor:device:2\"}],\"status\": 1,\"str_error\": \"mensaje de arror\"}";
     return send_page (connection, page_tmp);
   }
