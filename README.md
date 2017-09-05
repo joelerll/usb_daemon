@@ -12,7 +12,7 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 > ./client 5555 listar_dispositivos # usar el cliente
 ```
 
-![ejemplo](https://imgur.com/a/Cq9ky "ejemplo")
+![ejemplo](https://i.imgur.com/e2jq62S.gifv "ejemplo")
 
 # Uso cliente
 
