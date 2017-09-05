@@ -39,3 +39,7 @@ listDis*
 bin/daemonTest
 bin/usbPOrtListaDisp
 obj/usb/*.o
+web_server/
+bin/jsonPrueba
+bin/server
+bin/cliente

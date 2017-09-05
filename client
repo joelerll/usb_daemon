@@ -70,19 +70,18 @@ def listar_dispositivos():
 	r = requests.get("http://localhost:{}/listar_dispositivos".format(int(sys.argv[1])), data=None)
 	# print(r.text)
 	respuesta = json.loads(r.text)
-	print(r.text)
 	resp = []
-	if (respuesta['status'] == 1):	
+	if (respuesta['status'] == 0):	
 		for respuesta in respuesta['dispositivos']:
 			tmp = []
 			tmp.append( respuesta['nombre'])
 			tmp.append( respuesta['montaje'])
-			tmp.append( respuesta['idVendor'] + ':' + respuesta['idProduct'])
+			tmp.append( respuesta['id'])
 			tmp.append( respuesta['nodo'])
 			resp.append(tmp)
 		print (tabulate(resp, headers=["nombre","montaje", "id", "nodo"], tablefmt="grid"))
 	else:
-		print(respuesta['str_error'])
+		print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
 
 def nombrar_dispositivo():
 	if len(sys.argv) == 5:
@@ -90,12 +89,16 @@ def nombrar_dispositivo():
 		r = requests.post("http://localhost:{}/nombrar_dispositivo".format(int(sys.argv[1])), data={"nombrar_dispositivo": req})
 		respuesta = json.loads(r.text)
 		print(r.text)
-		resp = []
-		tmp = []
-		tmp.append( respuesta['nombre'])
-		tmp.append( respuesta['nodo'])
-		resp.append(tmp)
-		print (tabulate(resp, headers=["nombre", "nodo"], tablefmt="grid"))
+		if (respuesta['status'] == 0):
+			resp = []
+			tmp = []
+			tmp.append( respuesta['nombre'])
+			tmp.append( respuesta['nodo'])
+			resp.append(tmp)
+			print (tabulate(resp, headers=["nombre", "nodo"], tablefmt="grid"))
+		else:
+			print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
+		
 	else:
 		print("El numero de argumentos no es valido")
 		print(ayuda)
@@ -104,17 +107,21 @@ def leer_archivo():
 	if len(sys.argv) == 5:
 		req ="{" +  '"solicitud": "leer_archivo", "nombre": "{}","nombre_archivo": "{}"'.format(sys.argv[3],sys.argv[4]) + "}"
 		r = requests.post("http://localhost:{}/leer_archivo".format(int(sys.argv[1])), data={"leer_archivo": req})
+		print(r.text)
 		respuesta = json.loads(r.text)
 		# "nombre": "mi_usb", "nombre_del_archivo": "archivo.txt", "contenido": "sdadad\na\nsd\nsd\nasd",
-		print(r.text)
-		resp = []
-		tmp = []
-		tmp.append( respuesta['nombre'])
-		tmp.append( respuesta['nombre_del_archivo'])
-		resp.append(tmp)
-		print (tabulate(resp, headers=["nombre", "nombre_del_archivo"], tablefmt="grid"))
-		print("\n\033[92mContenido\033[0m\n")
-		print(respuesta['contenido'])
+		if (respuesta['status'] == 0):
+			print(r.text)
+			resp = []
+			tmp = []
+			tmp.append( respuesta['nombre'])
+			tmp.append( respuesta['nombre_del_archivo'])
+			resp.append(tmp)
+			print (tabulate(resp, headers=["nombre", "nombre_del_archivo"], tablefmt="grid"))
+			print("\n\033[92mContenido\033[0m\n")
+			print(respuesta['contenido'])
+		else:
+			print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
 		# print(r.text)
 	else:
 		print("El numero de argumentos no es valido")
@@ -134,12 +141,16 @@ def escribir_archivo():
 				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
 				print(r.text)
 				respuesta = json.loads(r.text)
-				tmp = []
-				resp = []
-				tmp.append(respuesta['solicitud'])
-				tmp.append(respuesta['nombre'])
-				resp.append(tmp)
-				print (tabulate(resp, headers=["solicitud", "nombre"], tablefmt="grid"))
+				if (respuesta['status'] == 0):
+					tmp = []
+					resp = []
+					tmp.append(respuesta['solicitud'])
+					tmp.append(respuesta['nombre'])
+					resp.append(tmp)
+					print (tabulate(resp, headers=["solicitud", "nombre"], tablefmt="grid"))
+				else:
+					print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
+
 		except:
 			print("El archivo no existe")
 	else:

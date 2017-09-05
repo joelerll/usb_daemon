@@ -1,7 +1,7 @@
 all: server daemon
 
 server: src/server.c
-	gcc -Wall -Iinclude src/server.c src/solicitudes_server.c -o bin/server.out -Llib -ljson  -lmicrohttpd 
+	gcc -Wall -Iinclude src/server.c src/solicitudes_server.c -o bin/server -Llib -ljson  -lmicrohttpd 
 
 daemon: usb
 	./bin/usbDaemon
@@ -56,7 +56,7 @@ clientTestUsb:
 
 # FIN - USB SOCKET
 clean:
-	rm -rf obj/*.o bin/server lib/*.so obj/*.o web_server/bootstrap.min.* web_server/jquery.min.* web_server/vue.* web_server/bootstrap.min.* web_server/materialize.min* web_server/fonts
+	rm -rf obj/*.o bin/server bin/usbDaemon bin/jsonPrueba bin/server.out bin/cliente lib/*.so obj/*.o web_server/bootstrap.min.* web_server/jquery.min.* web_server/vue.* web_server/bootstrap.min.* web_server/materialize.min* web_server/fonts obj/usb/*.o
 
 mount:
 	/bin/bash scripts/mount.sh

@@ -16,7 +16,7 @@
 #include "usbJson.h"
 
 
-#define SERV_TCP_PORT 8225 /* server's port number */
+#define SERV_TCP_PORT 8226 /* server's port number */
 
 #define MAX_SIZE 50000
 

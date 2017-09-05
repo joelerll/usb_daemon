@@ -1,5 +1,5 @@
 <!-- errores ortograficos -->
-# Descripcion del proyecto
+# Descripción del proyecto
 Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dispositivo, editar un archivo del dispositivo y leer un archivo del dispositivo
 
 # 5 Simples pasos
@@ -13,7 +13,6 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 ```
 
 # Uso cliente
-<!-- mostrar gif del uso del cliente los resultados -->
 
 ```sh
 > ./client --help
@@ -21,7 +20,7 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 ```
 
 # Matar al daemon
-Es muy facil, solo ejecutar
+Es muy fácil, solo ejecutar
 
 ```sh
 > make kill
@@ -35,4 +34,14 @@ Es muy facil, solo ejecutar
 
 # Dependencias
 
-Direccion url de las dependencias y para que las usamos
+## Dependencias C
+
+* libmicrohttpd
+* libudev
+* libjson
+
+## Dependencias cliente
+
+* python3
+* requests
+* tabulate

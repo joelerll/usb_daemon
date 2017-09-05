@@ -35,7 +35,7 @@ const char *greetingpage =
 char *page = "";
 
 
-char *listar_dispositivos_respo = "{\"dispositivos\": %s, \"status\": 1}";
+char *listar_dispositivos_respo = "%s";
 
 const char *errorpage =
   "{\"error\": \"metodo no valido\"}";
@@ -75,9 +75,9 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
         return MHD_NO;
       // CAMBIAR POR FUNCION
       // char *nombre = "asds";
-      nombrar_dispositivo(data);
+      char *x  = nombrar_dispositivo(data);
       // printf("%s\n", data);
-      snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, x);
       con_info->answerstring = answerstring;
     }
     else
@@ -118,6 +118,7 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
         return MHD_NO;
       // CAMBIAR POR FUNCION
       char *resp = leer_archivo(data);
+      printf("%s\n", resp);
       snprintf (answerstring, MAXANSWERSIZE, greetingpage, resp);
       con_info->answerstring = answerstring;
     }
@@ -180,6 +181,7 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection, c
     char *dispositivos = solicitudes_daemon();
     char *page_tmp = malloc(MAXANSWERSIZE);
     snprintf (page_tmp, MAXANSWERSIZE, listar_dispositivos_respo, dispositivos);
+    printf("%s\n", page_tmp);
     page = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [{\"nombre\": \"mi_dispotivito\", \"montaje\": \"/home/joel\",\"nodo\": \"/dev/ddd\",\"id\": \"vendor:device\"},{\"nombre\": \"mi_dispotivito2\", \"montaje\": \"/home/joel/dos\",\"nodo\": \"/dev/bbb\",\"id\": \"vendor:device:2\"}],\"status\": 1,\"str_error\": \"mensaje de arror\"}";
     return send_page (connection, page_tmp);
   }

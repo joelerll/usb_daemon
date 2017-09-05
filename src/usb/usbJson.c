@@ -7,7 +7,7 @@
 
 void toJson(){
 
-    strcpy(json,"{ \"solicitud\": \"listar_dispositivos\" , \"dispositivos\": [");
+    strcpy(json,"{ \"solicitud\": \"listar_dispositivos\" , \"status\": 0, \"dispositivos\": [");
 
     ElementoLista *elem = NULL;
     for (elem = Lista_Primero(&listaUsb); elem != NULL; elem = Lista_Siguiente(&listaUsb, elem)){
@@ -37,7 +37,7 @@ void toJson(){
         strcat(json,json_object_to_json_string(jobj));
         if(Lista_Siguiente(&listaUsb, elem)!=NULL) strcat(json,",");
     }   
-    strcat(json,"]");
+    strcat(json,"]}");
     //printf("--ACT: %s",json);
 }
 
