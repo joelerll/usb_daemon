@@ -131,26 +131,35 @@ def leer_archivo():
 def escribir_archivo():
 	# TODO: leer archivo para escribirlo
 	# print(sys.argv[6]
+
 	if len(sys.argv) == 7:
 		try:
-			with open(sys.argv[6], 'r') as myfile:
-				bytes = os.path.getsize(sys.argv[6])
-				data = myfile.read().encode('utf8')
-				data = str(data)
-				data = data[2:-1]
-				req ="{" +  '"solicitud": "escribir_archivo","nombre": "{}", "nombre_archivo": "{}", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],bytes, data) + "}"
-				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
-				# print(r.text)
-				respuesta = json.loads(r.text)
-				if (respuesta['status'] == 0):
-					tmp = []
-					resp = []
-					tmp.append(respuesta['solicitud'])
-					tmp.append(respuesta['nombre'])
-					resp.append(tmp)
-					print (tabulate(resp, headers=["solicitud", "nombre"], tablefmt="grid"))
-				else:
-					print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
+			es_digito = sys.argv[5].isdigit()
+			if es_digito:
+				with open(sys.argv[6], 'r') as myfile:
+					bytes = os.path.getsize(sys.argv[6])
+					print("El tamano contenido es: {}".format(bytes))
+					if bytes!= int(sys.argv[5]):
+						print("El tamano del contenido no es correcto")
+					else:
+						data = myfile.read().encode('utf8')
+						data = str(data)
+						data = data[2:-1]
+						req ="{" +  '"solicitud": "escribir_archivo","nombre": "{}", "nombre_archivo": "{}", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],bytes, data) + "}"
+						r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
+						# print(r.text)
+						respuesta = json.loads(r.text)
+						if (respuesta['status'] == 0):
+							tmp = []
+							resp = []
+							tmp.append(respuesta['solicitud'])
+							tmp.append(respuesta['nombre'])
+							resp.append(tmp)
+							print (tabulate(resp, headers=["solicitud", "nombre"], tablefmt="grid"))
+						else:
+							print("\033[0;31m" +respuesta['str_error'] + "\033[0m")
+			else:
+				print("El tamano contenido no es un numero")
 
 		except:
 			print("El archivo no existe")

@@ -13,7 +13,7 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 ```
 
 
-![Imgur](https://i.imgur.com/e2jq62S.gif)
+![Imgur](https://i.imgur.com/NgC83Um.gif)
 
 # Uso cliente
 
