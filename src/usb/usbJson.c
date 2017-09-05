@@ -160,7 +160,7 @@ char *jsonEscribirRespuesta(char *solicitudEscribir, char *nombre, char * nombre
 
 }
 
-char *jsonLeerArchivoRespuesta(char *solicitudLeer, char *nombre, char * nombreArchivo, char * contenido, char * stErr) {
+char *jsonLeerArchivoRespuesta(char *solicitudLeer, char *nombre, char * nombreArchivo, char * contenido, int status, char * stErr) {
   
   json_object * jobj = json_object_new_object();
 
@@ -168,12 +168,14 @@ char *jsonLeerArchivoRespuesta(char *solicitudLeer, char *nombre, char * nombreA
   json_object *jsonNombre = json_object_new_string(nombre);
   json_object *jsonNombreArchivo = json_object_new_string(nombreArchivo);
   json_object *jsonContenido = json_object_new_string(contenido);
+  json_object *jsonStatus = json_object_new_int(status);
   json_object *jsonError = json_object_new_string(stErr);
 
   json_object_object_add(jobj,"solicitud", jsonSoli);
   json_object_object_add(jobj,"nombre", jsonNombre);
   json_object_object_add(jobj,"nombre_archivo", jsonNombreArchivo);
   json_object_object_add(jobj,"contenido", jsonContenido);
+  json_object_object_add(jobj,"status", jsonStatus);
   json_object_object_add(jobj,"str_error", jsonError);
 
   /*Now printing the json object*/

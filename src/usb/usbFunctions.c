@@ -65,7 +65,8 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
         char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
                                                             nombreUsb, 
                                                             nombreArchivo, 
-                                                            "Error", 
+                                                            "Error",
+                                                            -1, 
                                                             "No se encontró dispositivo con nombre ingresado");
         write(client_socket,respuesta,500*sizeof(respuesta));
 
@@ -93,12 +94,14 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
                                                                 nombreUsb, 
                                                                 nombreArchivo, 
                                                                 prueba, 
+                                                                0,
                                                                 "Lectura de archivo exitosa");
         }else{
             respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
                                                                 nombreUsb, 
                                                                 nombreArchivo, 
                                                                 "", 
+                                                                -1,
                                                                 "Archivo no existe");
         }
         write(client_socket,respuesta,500*sizeof(respuesta));
