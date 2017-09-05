@@ -7,7 +7,7 @@
 
 void toJson(){
 
-    strcpy(json,"[");
+    strcpy(json,"{ \"solicitud\": \"listar_dispositivos\" , \"dispositivos\": ["):
 
     ElementoLista *elem = NULL;
     for (elem = Lista_Primero(&listaUsb); elem != NULL; elem = Lista_Siguiente(&listaUsb, elem)){
@@ -25,8 +25,13 @@ void toJson(){
         /*Form the json object*/
         /*Each of these is like a key value pair*/
         json_object_object_add(jobj,"nombre", nombre);
-        json_object_object_add(jobj,"idVendor", idVendor);
-        json_object_object_add(jobj,"idProduct", idProduct);
+
+        char id[20] = "";
+        strcat(id,idVendor);
+        strcat(id,":");
+        strcat(id,idProduct);
+
+        json_object_object_add(jobj,"id",id);
         json_object_object_add(jobj,"montaje", montaje);
         json_object_object_add(jobj,"nodo", nodo);
          /*Now printing the json object*/
@@ -122,11 +127,11 @@ char *jsonNombrarDipositivosRespuesta(char *solicitudNombrar,int status, char *n
   json_object *jsonNodo = json_object_new_string(nodo);
   json_object *jsonError = json_object_new_string(stErr);
 
-  json_object_object_add(jobj,"qwqwqw", jsonSoli);
+  json_object_object_add(jobj,"solicitud", jsonSoli);
   json_object_object_add(jobj,"status", jsonStatus);
   json_object_object_add(jobj,"nombre", jsonNombre);
   json_object_object_add(jobj,"nodo", jsonNodo);
-  json_object_object_add(jobj,"error", jsonError);
+  json_object_object_add(jobj,"str_error", jsonError);
 
   //char retorno[50000] = "";
   //strcpy(retorno,(char *)json_object_to_json_string(jobj));
@@ -148,9 +153,9 @@ char *jsonEscribirRespuesta(char *solicitudEscribir, char *nombre, char * nombre
 
     json_object_object_add(jobj,"solicitud", jsonSoli);
     json_object_object_add(jobj,"nombre", jsonNombre);
-    json_object_object_add(jobj,"nombre_del_archivo", jsonNombreArchivo);
+    json_object_object_add(jobj,"nombre_archivo", jsonNombreArchivo);
     json_object_object_add(jobj,"status", jsonStatus);
-    json_object_object_add(jobj,"error", jsonError);
+    json_object_object_add(jobj,"str_error", jsonError);
 
     /*Now printing the json object*/
     return (char *)json_object_to_json_string(jobj);
@@ -169,9 +174,9 @@ char *jsonLeerArchivoRespuesta(char *solicitudLeer, char *nombre, char * nombreA
 
   json_object_object_add(jobj,"solicitud", jsonSoli);
   json_object_object_add(jobj,"nombre", jsonNombre);
-  json_object_object_add(jobj,"nombre_del_archivo", jsonNombreArchivo);
+  json_object_object_add(jobj,"nombre_archivo", jsonNombreArchivo);
   json_object_object_add(jobj,"contenido", jsonContenido);
-  json_object_object_add(jobj,"error", jsonError);
+  json_object_object_add(jobj,"str_error", jsonError);
 
   /*Now printing the json object*/
   return (char*)json_object_to_json_string(jobj);
