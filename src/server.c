@@ -98,7 +98,8 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
         return MHD_NO;
       printf("%s\n", data);
       // CAMBIAR POR FUNCION
-      snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
+      char *estado = escribir_archivo(data);
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, estado);
       con_info->answerstring = answerstring;
     }
     else

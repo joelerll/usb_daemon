@@ -13,6 +13,7 @@ import sys
 import requests
 import json
 from tabulate import tabulate
+import os
 # print ('Argument List:', str(sys.argv))
 ayuda = """
 		Ejecute para ayuda:
@@ -109,17 +110,23 @@ def leer_archivo():
 
 def escribir_archivo():
 	# TODO: leer archivo para escribirlo
-	if len(sys.argv) == 6:
+	# print(sys.argv[6])
+	if len(sys.argv) == 7:
 		try:
-			with open(sys.argv[4], 'r') as myfile:
-   				data = myfile.read().encode('utf8')
-   				data = str(data)
-   				data = data[2:-1]
-   				# argv[5]
-   				req ="{" +  '"solicitud": "escribir_archivo","nombre": "{}", "nombre_archivo": "{}", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],len(data), data) + "}"
-   				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
-   				respuesta = json.loads(r.text)
-   				print(respuesta)
+			with open(sys.argv[6], 'r') as myfile:
+				bytes = os.path.getsize(sys.argv[6])
+				data = myfile.read().encode('utf8')
+				data = str(data)
+				data = data[2:-1]
+				req ="{" +  '"solicitud": "escribir_archivo","nombre": "{}", "nombre_archivo": "{}", "tamano_contenido": {}, "contenido": "{}"'.format(sys.argv[3],sys.argv[4],bytes, data) + "}"
+				r = requests.post("http://localhost:{}/escribir_archivo".format(int(sys.argv[1])), data={"escribir_archivo": req})
+				respuesta = json.loads(r.text)
+				tmp = []
+				resp = []
+				tmp.append(respuesta['solicitud'])
+				tmp.append(respuesta['nombre'])
+				resp.append(tmp)
+				print (tabulate(resp, headers=["solicitud", "nombre"], tablefmt="grid"))
 		except:
 			print("El archivo no existe")
 	else:
