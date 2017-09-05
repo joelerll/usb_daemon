@@ -67,7 +67,7 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
                                                             nombreUsb, 
                                                             nombreArchivo, 
                                                             "Error", 
-                                                            "Archivo no existe en USB");
+                                                            "No se encontró dispositivo con nombre ingresado");
         write(client_socket,respuesta,500*sizeof(respuesta));
 
     }else{
@@ -77,19 +77,26 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
         char prueba[500000];
         
         file1 = fopen ( archivoLeido, "r" );
+        char *respuesta = "";
+        if(file1!=NULL){
+            int i = 0;    
+            while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
+                prueba[i]=data1;
+                i++;
+            }
 
-        int i = 0;    
-        while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
-            prueba[i]=data1;
-            i++;
-        }
-
-        char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+            respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+                                                                nombreUsb, 
+                                                                nombreArchivo, 
+                                                                prueba, 
+                                                                "Lectura de archivo exitosa");
+        }else{
+            respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
                                                             nombreUsb, 
                                                             nombreArchivo, 
-                                                            prueba, 
-                                                            "Lectura de archivo exitosa");
-  
+                                                            "Error", 
+                                                            "Archivo no existe");  
+        }
         write(client_socket,respuesta,500*sizeof(respuesta));
     }
 }
