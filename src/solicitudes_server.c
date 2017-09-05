@@ -73,7 +73,7 @@ char *solicitudes_daemon() {
       error_mensaje = "{\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [], \"status\": -1,\"str_error\":  \"Error leer al socket\"}";
       return error_mensaje;
     }
-    printf("%s\n", recvBuff);
+    // printf("%s\n", recvBuff);
     retorno = (char *)recvBuff;
   return retorno;
 }
@@ -182,7 +182,7 @@ char *escribir_archivo(const char *json) {
       return error_mensaje;
     }
     retorno = (char *)recvBuff;
-    printf("%s\n", recvBuff);
+    // printf("%s\n", recvBuff);
   return retorno;
 }
 
@@ -236,6 +236,6 @@ char *leer_archivo(const char *json) {
       return error_mensaje;
     }
     retorno = (char *)recvBuff;
-    printf("%s\n", recvBuff);
+    // printf("%s\n", recvBuff);
   return retorno;
 }
