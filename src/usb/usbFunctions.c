@@ -66,7 +66,7 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
                                                             nombreUsb, 
                                                             nombreArchivo, 
                                                             "Error", 
-                                                            "Archivo no existe en USB");
+                                                            "No se encontró dispositivo con nombre ingresado");
         write(client_socket,respuesta,500*sizeof(respuesta));
 
     }else{
@@ -79,19 +79,28 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
         strcat(direccion,nombreArchivo);
         printf("%s\n", direccion);
         FILE *archivoLeido = fopen ( direccion, "r" );
-        int i = 0;    
-        while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
-            prueba[i]=data1;
-            i++;
+        char *respuesta = "";
+
+        if(archivoLeido){
+            int i = 0;    
+            while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
+                prueba[i]=data1;
+                i++;
+            }
+            printf("%s\n", prueba);
+            fclose(archivoLeido);
+            respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+                                                                nombreUsb, 
+                                                                nombreArchivo, 
+                                                                prueba, 
+                                                                "Lectura de archivo exitosa");
+        }else{
+            respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+                                                                nombreUsb, 
+                                                                nombreArchivo, 
+                                                                "", 
+                                                                "Archivo no existe");
         }
-        printf("%s\n", prueba);
-        fclose(archivoLeido);
-        char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
-                                                            nombreUsb, 
-                                                            nombreArchivo, 
-                                                            prueba, 
-                                                            "Lectura de archivo exitosa");
-        // printf("%s\n", respuesta);
         write(client_socket,respuesta,500*sizeof(respuesta));
     }
     close(client_socket);

@@ -18,20 +18,18 @@ void toJson(){
         
         /*Creating json strings*/
         json_object *nombre = json_object_new_string(info->nombre);
-        json_object *idVendor = json_object_new_string(info->idVendor);
-        json_object *idProduct = json_object_new_string(info->idProduct);
+
+        char id[20] = "";
+        strcat(id,info->idVendor);
+        strcat(id,":");
+        strcat(id,info->idProduct);
+        json_object *idObj= json_object_new_string(id);
         json_object *montaje = json_object_new_string(info->usbDirMount);
         json_object *nodo = json_object_new_string(info->usbNodo);
         /*Form the json object*/
         /*Each of these is like a key value pair*/
         json_object_object_add(jobj,"nombre", nombre);
-
-        char id[20] = "";
-        strcat(id,idVendor);
-        strcat(id,":");
-        strcat(id,idProduct);
-
-        json_object_object_add(jobj,"id",id);
+        json_object_object_add(jobj,"id",idObj);
         json_object_object_add(jobj,"montaje", montaje);
         json_object_object_add(jobj,"nodo", nodo);
          /*Now printing the json object*/
