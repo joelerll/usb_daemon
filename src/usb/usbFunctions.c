@@ -54,9 +54,46 @@ void nombrarDispositivo(int client_socket, char *JSONSolicitud){
     close(client_socket);
 }
 
+//{ ‘solicitud’: ‘leer_archivo’, ‘nombre‘: ..., ‘nombre_archivo’: ... }
 void leerArchivo(int client_socket, char *JSONSolicitud){
+    
+    char *nombreUsb = getValuePorCampo(JSONSolicitud,2);
+    char *nombreArchivo = getValuePorCampo(JSONSolicitud,3);
 
+    ElementoLista *elem = Lista_BuscarXNombre(&listaUsb,nombreUsb);
+
+    if(elem==NULL){
+        char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+                                                            nombreUsb, 
+                                                            nombreArchivo, 
+                                                            "Error", 
+                                                            "Archivo no existe en USB");
+        write(client_socket,respuesta,500*sizeof(respuesta));
+
+    }else{
+
+        FILE *archivoLeido;
+        int data1 =0;
+        char prueba[500000];
+        
+        file1 = fopen ( archivoLeido, "r" );
+
+        int i = 0;    
+        while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
+            prueba[i]=data1;
+            i++;
+        }
+
+        char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
+                                                            nombreUsb, 
+                                                            nombreArchivo, 
+                                                            prueba, 
+                                                            "Lectura de archivo exitosa");
+  
+        write(client_socket,respuesta,500*sizeof(respuesta));
+    }
 }
+
 
 // { ‘solicitud’: ‘escribir_archivo’, ‘nombre‘: ..., ‘nombre_archivo’: ...,
 // ‘tamano_contenido: ..., ‘contenido’: ....}
