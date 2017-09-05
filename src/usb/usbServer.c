@@ -108,7 +108,6 @@ void *enumerarDispositivos(){
 void analizarSolicitud(int client_socket, char *JSONSolicitud){
 
     char *tipoSolicitud = getTipoSolicitud(JSONSolicitud);
-    printf("=====%s\n", tipoSolicitud);
     if(strcmp(tipoSolicitud,"listar_dispositivos")==0){
         listarDispositivos(client_socket);
     }
@@ -116,7 +115,7 @@ void analizarSolicitud(int client_socket, char *JSONSolicitud){
         nombrarDispositivo(client_socket,JSONSolicitud);
     }
     if(strcmp(tipoSolicitud,"leer_archivo")==0){
-
+        leerArchivo(client_socket,JSONSolicitud);
     }
     if(strcmp(tipoSolicitud,"escribir_archivo")==0){
         escribiArchivo(client_socket,JSONSolicitud);

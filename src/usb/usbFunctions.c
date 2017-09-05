@@ -59,7 +59,6 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
     
     char *nombreUsb = getValuePorCampo(JSONSolicitud,2);
     char *nombreArchivo = getValuePorCampo(JSONSolicitud,3);
-
     ElementoLista *elem = Lista_BuscarXNombre(&listaUsb,nombreUsb);
 
     if(elem==NULL){
@@ -71,27 +70,31 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
         write(client_socket,respuesta,500*sizeof(respuesta));
 
     }else{
-
-        FILE *archivoLeido;
         int data1 =0;
         char prueba[500000];
-        
-        file1 = fopen ( archivoLeido, "r" );
-
+        char direccion[50000] = "";
+        struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
+        strcat(direccion,info->usbDirMount);
+        strcat(direccion,"/");
+        strcat(direccion,nombreArchivo);
+        printf("%s\n", direccion);
+        FILE *archivoLeido = fopen ( direccion, "r" );
         int i = 0;    
         while ( (data1 = fgetc ( archivoLeido )) != EOF ) {
             prueba[i]=data1;
             i++;
         }
-
+        printf("%s\n", prueba);
+        fclose(archivoLeido);
         char *respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
                                                             nombreUsb, 
                                                             nombreArchivo, 
                                                             prueba, 
                                                             "Lectura de archivo exitosa");
-  
+        // printf("%s\n", respuesta);
         write(client_socket,respuesta,500*sizeof(respuesta));
     }
+    close(client_socket);
 }
 
 

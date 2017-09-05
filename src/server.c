@@ -117,7 +117,8 @@ static int iterate_post (void *coninfo_cls, enum MHD_ValueKind kind, const char 
       if (!answerstring)
         return MHD_NO;
       // CAMBIAR POR FUNCION
-      snprintf (answerstring, MAXANSWERSIZE, greetingpage, data);
+      char *resp = leer_archivo(data);
+      snprintf (answerstring, MAXANSWERSIZE, greetingpage, resp);
       con_info->answerstring = answerstring;
     }
     else

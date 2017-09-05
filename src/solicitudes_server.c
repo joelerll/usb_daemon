@@ -146,3 +146,44 @@ char *escribir_archivo(const char *json) {
     printf("%s\n", recvBuff);
   return retorno;
 }
+
+char *leer_archivo(const char *json) {
+  int sockfd;
+    struct sockaddr_in serv_addr;
+    int port;
+    char *retorno = NULL;
+    char *ip = "127.0.0.1";
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    port = SERV_TCP_PORT;
+
+    if (sockfd < 0)
+        error("ERROR opening socket");
+
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
+    serv_addr.sin_addr.s_addr = inet_addr(ip);
+
+    if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0) {
+        error("ERROR connecting");
+    }
+    // char *aa = malloc(sizeof(char *) * strlen(nombre));
+    // strcpy(aa, nombre);
+    // char solicitudEjemplo[50000] = "";
+    // printf("%s\n", aa );
+    // printf("asdsadadsadas\n");
+    // strcpy(solicitudEjemplo,jsonNombrarDipositivosSolicitud("nombrar_dispositivo",
+    //                                                              "/dev/sdc",
+    //                                                              "NUEEEVO"));
+    // printf("===%s\n", solicitudEjemplo);
+    int n = write(sockfd,json,strlen(json));
+    if (n < 0)
+         error("ERROR writing to socket");
+    
+    char recvBuff[50000];
+    n = read(sockfd, recvBuff, 500*sizeof(recvBuff));
+    retorno = (char *)recvBuff;
+    printf("%s\n", recvBuff);
+  return retorno;
+}
