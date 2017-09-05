@@ -7,7 +7,7 @@
 
 void toJson(){
 
-    strcpy(json,"{ \"solicitud\": \"listar_dispositivos\" , \"dispositivos\": ["):
+    strcpy(json,"{ \"solicitud\": \"listar_dispositivos\" , \"dispositivos\": [");
 
     ElementoLista *elem = NULL;
     for (elem = Lista_Primero(&listaUsb); elem != NULL; elem = Lista_Siguiente(&listaUsb, elem)){

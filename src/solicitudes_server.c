@@ -44,9 +44,24 @@ char *solicitudes_daemon() {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     port = SERV_TCP_PORT;
-
-    if (sockfd < 0)
-        error("ERROR opening socket");
+    char *error_mensaje = malloc(sizeof(char *) * 5000);
+    /*
+      solicitud: 'listar_dispositivos',
+    dispositivos: [{
+        nombre: '',
+        id: 'vendor:device',
+        montaje: '/home',
+        nodo: '/dev/'
+    }],
+    status: 0,
+    str_error: ''
+    */
+    if (sockfd < 0) {
+      error("ERROR opening socket");
+      *error_mensaje = "\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [], \"status\": -1,\"str_error\":  \"Error en abrir socket\"";
+      return error_mensaje
+    }
+        
 
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -55,13 +70,23 @@ char *solicitudes_daemon() {
 
     if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0) {
         error("ERROR connecting");
+        *error_mensaje = "\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [], \"status\": -1,\"str_error\":  \"Error en abrir conectar socket\"";
+        return error_mensaje
     }
     char solicitudEjemplo[50000] = "{ \"solicitud\": \"listar_dispositivos\" }";
     int n = write(sockfd,solicitudEjemplo,strlen(solicitudEjemplo));
-    if (n < 0)
-         error("ERROR writing to socket");   
+    if (n < 0) {
+      error("ERROR writing to socket");
+      *error_mensaje = "\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [], \"status\": -1,\"str_error\":  \"Error en hacer peticion al socket\"";
+      return error_mensaje
+    }
     char recvBuff[50000];
     n = read(sockfd, recvBuff, 500*sizeof(recvBuff));
+    if (n < 0) {
+      error("ERROR red to socket");
+      *error_mensaje = "\"solicitud\": \"listar_dispositivos\", \"dispositivos\": [], \"status\": -1,\"str_error\":  \"Error leer al socket\"";
+      return error_mensaje
+    }
     retorno = (char *)recvBuff;
   return retorno;
 }
@@ -75,10 +100,11 @@ char *nombrar_dispositivo(const char *nombre) {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     port = SERV_TCP_PORT;
-
-    if (sockfd < 0)
-        error("ERROR opening socket");
-
+    char *error_mensaje = "\"\"";
+    if (sockfd < 0) {
+      error("ERROR opening socket");
+    }
+      
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
@@ -97,9 +123,9 @@ char *nombrar_dispositivo(const char *nombre) {
     //                                                              "NUEEEVO"));
     // printf("===%s\n", solicitudEjemplo);
     int n = write(sockfd,nombre,strlen(nombre));
-    if (n < 0)
-         error("ERROR writing to socket");
-    
+    if (n < 0) {
+      error("ERROR writing to socket");
+    }
     char recvBuff[50000];
     n = read(sockfd, recvBuff, 500*sizeof(recvBuff));
     retorno = (char *)recvBuff;
@@ -116,9 +142,10 @@ char *escribir_archivo(const char *json) {
 
     port = SERV_TCP_PORT;
 
-    if (sockfd < 0)
-        error("ERROR opening socket");
-
+    if (sockfd < 0) {
+      error("ERROR opening socket");
+    }
+      
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
@@ -137,9 +164,9 @@ char *escribir_archivo(const char *json) {
     //                                                              "NUEEEVO"));
     // printf("===%s\n", solicitudEjemplo);
     int n = write(sockfd,json,strlen(json));
-    if (n < 0)
-         error("ERROR writing to socket");
-    
+    if (n < 0) {
+      error("ERROR writing to socket");
+    }
     char recvBuff[50000];
     n = read(sockfd, recvBuff, 500*sizeof(recvBuff));
     retorno = (char *)recvBuff;
@@ -157,9 +184,10 @@ char *leer_archivo(const char *json) {
 
     port = SERV_TCP_PORT;
 
-    if (sockfd < 0)
-        error("ERROR opening socket");
-
+    if (sockfd < 0) {
+      error("ERROR opening socket");
+    }
+      
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
@@ -178,9 +206,9 @@ char *leer_archivo(const char *json) {
     //                                                              "NUEEEVO"));
     // printf("===%s\n", solicitudEjemplo);
     int n = write(sockfd,json,strlen(json));
-    if (n < 0)
-         error("ERROR writing to socket");
-    
+    if (n < 0) {
+      error("ERROR writing to socket");
+    }
     char recvBuff[50000];
     n = read(sockfd, recvBuff, 500*sizeof(recvBuff));
     retorno = (char *)recvBuff;
