@@ -135,6 +135,19 @@ ElementoLista *Lista_BuscarXNodo(ListaEnlazada *lista, char *nodo){
 	return NULL;
 }
 
+ElementoLista *Lista_BuscarXNombre(ListaEnlazada *lista, char *nombre){
+	if(lista->numeroElementos!=0){ 
+  	ElementoLista *elem = NULL;
+		for (elem = Lista_Primero(lista); elem != NULL; elem = Lista_Siguiente(lista, elem)) {
+      struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
+      //printf("[COMP: %s - %s]\n",info->nombre,nombre);
+		  if(strcmp(info->nombre,nombre) == 0){
+		    return elem;				
+		  }								
+		}								
+	}									
+	return NULL;
+}
 // int main(){
 //     return 0;
 // }

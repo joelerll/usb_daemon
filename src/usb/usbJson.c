@@ -91,6 +91,27 @@ char *getValuePorCampo(char *JSON, int nCampo) {
     return "";
 }
 
+int getIntPorCampo(char *JSON, int nCampo) {
+
+    int i=1;
+    json_object * jobj = json_tokener_parse(JSON);
+    enum json_type type;
+    json_object_object_foreach(jobj, key, val) {
+        type = json_object_get_type(val);
+        switch (type) {
+            case json_type_int:
+                if(i==nCampo) return json_object_get_int((json_object *)val);
+                i++;
+                break;
+            default: 
+                printf("%s",key);
+                i++ ;
+                break;
+        }
+    }
+    return 0;
+}
+
 char *jsonNombrarDipositivosRespuesta(char *solicitudNombrar,int status, char *nombre, char *nodo, char *stErr) {
 
   json_object * jobj = json_object_new_object();
@@ -111,5 +132,27 @@ char *jsonNombrarDipositivosRespuesta(char *solicitudNombrar,int status, char *n
   //strcpy(retorno,(char *)json_object_to_json_string(jobj));
     
   return (char *)json_object_to_json_string(jobj);
+
+}
+
+
+char *jsonEscribirRespuesta(char *solicitudEscribir, char *nombre, char * nombreArchivo, int status, char * stErr) {
+  
+    json_object * jobj = json_object_new_object();
+
+    json_object *jsonSoli = json_object_new_string(solicitudEscribir);
+    json_object *jsonNombre = json_object_new_string(nombre);
+    json_object *jsonNombreArchivo = json_object_new_string(nombreArchivo);
+    json_object *jsonStatus = json_object_new_int(status);
+    json_object *jsonError = json_object_new_string(stErr);
+
+    json_object_object_add(jobj,"solicitud", jsonSoli);
+    json_object_object_add(jobj,"nombre", jsonNombre);
+    json_object_object_add(jobj,"nombre_del_archivo", jsonNombreArchivo);
+    json_object_object_add(jobj,"status", jsonStatus);
+    json_object_object_add(jobj,"error", jsonError);
+
+    /*Now printing the json object*/
+    return (char *)json_object_to_json_string(jobj);
 
 }

@@ -63,7 +63,7 @@ void *runUsbServer(){
 
         //Se lee solicitud
         read(client_socket, solicitud, 10*sizeof(solicitud));
-        printf("Solicitud: %s",solicitud);
+//        printf("Solicitud: %s",solicitud);
         //Se analiza solicitud y de acuerdo a eso se responde lo deseado
         analizarSolicitud(client_socket,solicitud);
         close(client_socket);
@@ -99,6 +99,7 @@ void *enumerarDispositivos(){
     }
     while(1){
         enumerate_devices(udev);
+        sleep(1);
         //printf("%s",json);
     }
     udev_unref(udev);
@@ -118,7 +119,7 @@ void analizarSolicitud(int client_socket, char *JSONSolicitud){
 
     }
     if(strcmp(tipoSolicitud,"escribir_archivo")==0){
-
+        escribiArchivo(client_socket,JSONSolicitud);
     }
 }
 

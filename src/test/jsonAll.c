@@ -111,25 +111,3 @@ void jsonEscribirArchivoSolicitud(char *solicitudEscribir, char *nombre, char * 
   printf ("%s \n",json_object_to_json_string(jobj));
 
 }
-
-
-void jsonEscribirRespuesta(char *solicitudEscribir, char *nombre, char * nombreArchivo, int status, char * stErr) {
-  
-  json_object * jobj = json_object_new_object();
-
-  json_object *jsonSoli = json_object_new_string(solicitudEscribir);
-  json_object *jsonNombre = json_object_new_string(nombre);
-  json_object *jsonNombreArchivo = json_object_new_string(nombreArchivo);
-  json_object *jsonStatus = json_object_new_int(status);
-  json_object *jsonError = json_object_new_string(stErr);
-
-  json_object_object_add(jobj,"solicitud", jsonSoli);
-  json_object_object_add(jobj,"nombre", jsonNombre);
-  json_object_object_add(jobj,"nombre_del_archivo", jsonNombreArchivo);
-  json_object_object_add(jobj,"status", jsonStatus);
-  json_object_object_add(jobj,"error", jsonError);
-
-  /*Now printing the json object*/
-  printf ("%s \n",json_object_to_json_string(jobj));
-
-}

@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "usbFunctions.h"
 #include <stdio.h>
+#include <string.h>
 #include "usbJson.h"
 #include "usbLista.h"
 
@@ -50,7 +51,6 @@ void nombrarDispositivo(int client_socket, char *JSONSolicitud){
                                                 "Nombre ingresado con éxito");
         write(client_socket,respuesta,500*sizeof(respuesta));    
     }
-
     close(client_socket);
 }
 
@@ -58,6 +58,56 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
 
 }
 
+// { ‘solicitud’: ‘escribir_archivo’, ‘nombre‘: ..., ‘nombre_archivo’: ...,
+// ‘tamano_contenido: ..., ‘contenido’: ....}
 void escribiArchivo(int client_socket, char *JSONSolicitud){
 
+    char *nombreUsb = getValuePorCampo(JSONSolicitud,2);
+    char *nombreArchivo = getValuePorCampo(JSONSolicitud,3);
+    int tamano = getIntPorCampo(JSONSolicitud,4);
+    char *contenido = getValuePorCampo(JSONSolicitud,4);
+
+    ElementoLista *elem = Lista_BuscarXNombre(&listaUsb,nombreUsb);
+
+    if(elem==NULL){
+        char *respuesta = (char *)jsonEscribirRespuesta("escribir_archivo", 
+                                                        nombreUsb, 
+                                                        nombreArchivo, 
+                                                        -1, 
+                                                        "No se encontró dispositivo con nombre ingresado");
+        write(client_socket,respuesta,500*sizeof(respuesta));    
+    }else{
+        struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
+        char direccion[50000] = "";
+
+        strcat(direccion,info->usbDirMount);
+        strcat(direccion,"/");
+        strcat(direccion,nombreArchivo);
+        
+        // printf("[DirMount: %s]\n",info->usbDirMount);
+        // printf("[Direccion: %s]",direccion);
+
+        FILE *archivoNuevo = fopen (direccion, "w" );
+
+        int i=0;
+        //printf("tam:%i",tamano);
+        while(i!=(tamano)){
+             fputc (*(contenido+i),archivoNuevo);
+             i++;
+        }   
+        fclose(archivoNuevo);
+
+        char *respuesta = (char *)jsonEscribirRespuesta("escribir_archivo", 
+                                                        nombreUsb, 
+                                                        nombreArchivo, 
+                                                        0, 
+                                                        "Copia de archivo exitosa");
+
+        printf("Respuesta: %s",respuesta);
+        write(client_socket,respuesta,500*sizeof(respuesta));    
+
+    }
+    close(client_socket);
 }
+
+
