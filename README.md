@@ -12,7 +12,8 @@ Lee los puertos usb. Se puede listar los dispositivos conectados, nombrar un dis
 > ./client 5555 listar_dispositivos # usar el cliente
 ```
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="e2jq62S"><a href="//imgur.com/e2jq62S">View post on imgur.com</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+[Imgur](https://i.imgur.com/e2jq62S.gifv)
 
 # Uso cliente
 
