@@ -38,3 +38,4 @@ test.txt
 listDis*
 bin/daemonTest
 bin/usbPOrtListaDisp
+obj/usb/*.o

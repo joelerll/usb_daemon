@@ -16,7 +16,7 @@
 #include "usbJson.h"
 
 
-#define SERV_TCP_PORT 8237 /* server's port number */
+#define SERV_TCP_PORT 8225 /* server's port number */
 
 #define MAX_SIZE 50000
 
@@ -108,7 +108,7 @@ void *enumerarDispositivos(){
 void analizarSolicitud(int client_socket, char *JSONSolicitud){
 
     char *tipoSolicitud = getTipoSolicitud(JSONSolicitud);
-
+    printf("=====%s\n", tipoSolicitud);
     if(strcmp(tipoSolicitud,"listar_dispositivos")==0){
         listarDispositivos(client_socket);
     }

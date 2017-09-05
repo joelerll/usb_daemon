@@ -27,7 +27,6 @@ void nombrarDispositivo(int client_socket, char *JSONSolicitud){
     
     char *nodo = getValuePorCampo(JSONSolicitud,2);
     char *nombre = getValuePorCampo(JSONSolicitud,3);
-    
     //Obtengo el elemento de la lista con el nodo ingresado
     ElementoLista *elem = Lista_BuscarXNodo(&listaUsb,nodo);
 
@@ -43,6 +42,7 @@ void nombrarDispositivo(int client_socket, char *JSONSolicitud){
         struct InfoUSB *info = (struct InfoUSB *)elem->objeto;
         //Modificar nombre
         info->nombre = nombre;
+        // strcpy(info->nombre, nombre);
         //Función que devuelve json
         char *respuesta = (char *) jsonNombrarDipositivosRespuesta("nombrar_dispositivo",
                                                 0,

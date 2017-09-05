@@ -1,7 +1,7 @@
 all: server daemon
 
 server: src/server.c
-	gcc -Wall -Iinclude src/server.c src/json.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
+	gcc -Wall -Iinclude src/server.c src/solicitudes_server.c -o bin/server.out -Llib -ljson  -lmicrohttpd 
 
 daemon: usb
 	./bin/usbDaemon
@@ -19,11 +19,11 @@ install:
 main.o: src/main.c
 	gcc -Iinclude -c -Wall src/main.c -o obj/main.o
 
-json: src/test/json.test.c
-	gcc -Iinclude -Wall src/test/json.test.c -o bin/json.out -Llib -l:libjsmn.a
+# json: src/test/json.test.c
+# 	gcc -Iinclude -Wall src/test/json.test.c -o bin/json.out -Llib -l:libjsmn.a
 
-server_test: src/test/server.test.c
-	gcc -Wall src/test/server.test.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
+# server_test: src/test/server.test.c
+# 	gcc -Wall src/test/server.test.c -o bin/server.out -Llib -l:libjsmn.a -lmicrohttpd
 
 client:
 	/bin/bash scripts/client.sh
