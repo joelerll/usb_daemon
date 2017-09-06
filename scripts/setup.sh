@@ -3,30 +3,30 @@
 ## https://www.gnu.org/software/libmicrohttpd/
 min=0
 if [ -x "$(command -v make)" ]; then
-  echo 'Ya tiene instalado make'
+  echo -e '\e[41mYa tiene instalado make\e[0m'
 else
-  echo 'Instalando make'
+  echo -e '\e[41mInstalando make\e[0m'
   apt-get install make -y
 fi
 
 if [ -x "$(command -v gcc)" ]; then
-  echo 'Ya tiene instalado gcc'
+  echo -e '\e[41mYa tiene instalado gcc\e[0m'
 else
-  echo 'Instalando gcc'
+  echo -e '\e[41mInstalando gcc\e[0m'
   apt-get install gcc -y
 fi
 
 if [ -x "$(command -v wget)" ]; then
-  echo 'Ya tiene instalado wget'
+  echo -e '\e[41mYa tiene instalado wget\e[0m'
 else
-  echo 'Instalando wget'
+  echo -e '\e[41mInstalando wget\e[0m'
   apt-get install wget -y
 fi
 
 if [ -x "$(command -v git)" ]; then
-  echo 'Ya tiene instalado git'
+  echo -e '\e[41mYa tiene instalado git\e[0m'
 else
-  echo 'Instalando git'
+  echo -e '\e[41mInstalando git\e[0m'
   apt-get install git -y
 fi
 
@@ -34,39 +34,39 @@ fi
 libhttp=$(ldconfig -p | grep libmicrohttpd | wc -l)
 
 if [ "$libhttp" -eq  "$min" ]; then
-  echo 'Instalando libmicrohttpd'
+  echo -e '\e[41mInstalando libmicrohttpd\e[0m'
   apt-get install libmicrohttpd* -y 
 else
-  echo 'Ya tiene instalado libmicrohttpd'
+  echo -e '\e[41mYa tiene instalado libmicrohttpd\e[0m'
 fi
 
 ## INSTALANDO libudev
-libudev=$(ldconfig -p | grep libudev-dev | wc -l)
+libudev=$(ldconfig -p | grep libudev | wc -l)
 
 if [ "$libudev" -eq  "$min" ]; then
-  echo 'Instalando libudev'
+  echo -e '\e[41mInstalando libudev\e[0m'
   apt-get install libudev-dev -y
 else
-  echo 'Ya tiene instalado libudev'
+  echo -e '\e[41mYa tiene instalado libudev\e[0m'
 fi
 
 libjson=$(ldconfig -p | grep libjson0 | wc -l)
 
 if [ "$libjson" -eq  "$min"  ]; then
-  echo 'Instalando libjson'
+  echo -e '\e[41mInstalando libjson\e[0m'
   apt-get install libjson0 libjson0-dev -y
 else
-  echo 'Ya tiene instalado libjson'
+  echo -e '\e[41mYa tiene instalado libjson\e[0m'
 fi
 
 ## dependencias en python
-echo "Instalando dependencias de python pip 3"
+echo -e "\e[41mInstalando dependencias de python pip 3\e[0m"
 
 if [ -x "$(command -v pip3)" ]; then
-  echo 'Ya tiene instalado pip python3'
+  echo -e '\e[41mYa tiene instalado pip python3\e[0m'
 else
-  echo 'Instalando pip python3-pip'
-  apt-get install python3-pip
+  echo -e '\e[41mInstalando pip python3-pip\e[0m'
+  apt-get install python3-pip -y
 fi
 
 ## sin virtualenv
@@ -85,7 +85,7 @@ fi
 # echo "Accediendo al virtualenv"
 # source .virtualenv/bin/activate
 #
-echo "Instalando dependencias de python3"
+echo -e "\e[41mInstalando dependencias de python3\e[0m"
 pip3 install -r requirements.txt
 
 echo "
