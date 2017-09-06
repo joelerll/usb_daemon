@@ -78,7 +78,7 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
         strcat(direccion,info->usbDirMount);
         strcat(direccion,"/");
         strcat(direccion,nombreArchivo);
-        printf("%s\n", direccion);
+        // printf("%s\n", direccion);
         FILE *archivoLeido = fopen ( direccion, "r" );
         char *respuesta = "";
 
@@ -88,7 +88,7 @@ void leerArchivo(int client_socket, char *JSONSolicitud){
                 prueba[i]=data1;
                 i++;
             }
-            printf("%s\n", prueba);
+            // printf("%s\n", prueba);
             fclose(archivoLeido);
             respuesta = (char *)jsonLeerArchivoRespuesta("leer_archivo", 
                                                                 nombreUsb, 
@@ -155,7 +155,7 @@ void escribiArchivo(int client_socket, char *JSONSolicitud){
                                                         0, 
                                                         "Copia de archivo exitosa");
 
-        printf("Respuesta: %s",respuesta);
+        // printf("Respuesta: %s",respuesta);
         write(client_socket,respuesta,500*sizeof(respuesta));    
 
     }

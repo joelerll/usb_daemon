@@ -4,7 +4,7 @@ server: src/server.c
 	gcc -Wall -Iinclude src/server.c src/solicitudes_server.c -o bin/server -Llib -ljson  -lmicrohttpd 
 
 daemon: usb
-	./bin/usbDaemon
+	@/bin/bash scripts/state.sh
 
 clientTest: clientTestUsb
 	./bin/cliente
@@ -31,25 +31,25 @@ client:
 	python3 server.py
 
 usb: usbController.o usbDaemon.o usbFunctions.o usbLista.o usbJson.o usbServer.o
-	gcc -Wall obj/usb/*.o -o bin/usbDaemon -ludev -ljson -pthread
+	@gcc -Wall obj/usb/*.o -o bin/usbDaemon -ludev -ljson -pthread
 
 usbDaemon.o: src/usb/usbDaemon.c include/usb/*.h
-	gcc -c -Wall -Iinclude/usb/ src/usb/usbDaemon.c -o obj/usb/usbDaemon.o
+	@gcc -c -Wall -Iinclude/usb/ src/usb/usbDaemon.c -o obj/usb/usbDaemon.o
 
 usbController.o: src/usb/usbController.c
-	gcc -c -Wall -Iinclude/usb/ src/usb/usbController.c -o obj/usb/usbController.o -ludev
+	@gcc -c -Wall -Iinclude/usb/ src/usb/usbController.c -o obj/usb/usbController.o -ludev
 
 usbFunctions.o: src/usb/usbFunctions.c
-	gcc -c -Wall -Iinclude/usb/	src/usb/usbFunctions.c -o obj/usb/usbFunctions.o
+	@gcc -c -Wall -Iinclude/usb/	src/usb/usbFunctions.c -o obj/usb/usbFunctions.o
 
 usbLista.o: src/usb/usbLista.c
-	gcc -c -Wall -Iinclude/usb/ src/usb/usbLista.c -o obj/usb/usbLista.o
+	@gcc -c -Wall -Iinclude/usb/ src/usb/usbLista.c -o obj/usb/usbLista.o
 
 usbJson.o: src/usb/usbJson.c
-	gcc -c -Wall -Iinclude/usb/ src/usb/usbJson.c -o obj/usb/usbJson.o -ljson
+	@gcc -c -Wall -Iinclude/usb/ src/usb/usbJson.c -o obj/usb/usbJson.o -ljson
 
 usbServer.o: src/usb/usbServer.c
-	gcc -c -Wall -Iinclude/usb/ src/usb/usbServer.c -o obj/usb/usbServer.o -ljson
+	@gcc -c -Wall -Iinclude/usb/ src/usb/usbServer.c -o obj/usb/usbServer.o -ljson
 
 clientTestUsb: 
 	gcc -Wall src/usb/cliente.c -o bin/cliente -ljson

@@ -74,7 +74,7 @@ void enumerate_devices(struct udev* udev)
 
     }
     eliminarRetirado();
-    print_device();
+    // print_device();
     encerarEstado();
     //Cada vez que se actualiza la lista, se actualiza el json 
     toJson();

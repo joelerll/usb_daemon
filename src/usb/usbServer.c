@@ -22,7 +22,7 @@
 
 void *runUsbServer(){
     
-  printf("servidor \n");
+  // printf("servidor \n");
 
   int sockfd, client_socket; 
   struct sockaddr_in serv_addr;

@@ -58,7 +58,7 @@ char *getTipoSolicitud(char *jsonSolicitud){
             break;
         
         default:
-            printf("no es string");
+            // printf("no es string");
             printf("%s",key);
             break;
         }
