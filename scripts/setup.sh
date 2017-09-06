@@ -41,7 +41,7 @@ else
 fi
 
 ## INSTALANDO libudev
-libudev=$(ldconfig -p | grep libudev | wc -l)
+libudev=$(ldconfig -p | grep libudev-dev | wc -l)
 
 if [ "$libudev" -eq  "$min" ]; then
   echo -e '\e[41mInstalando libudev\e[0m'
